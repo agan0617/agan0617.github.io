@@ -3,65 +3,63 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>遊戲攻略</title>
-<meta name="description" content="agan0617 的遊戲攻略專區">
+<meta name="robots" content="noindex">
+<title>遊戲攻略（私人頁面）</title>
 <style>
-  :root {
-    --bg: #f4f2ee; --card: #ffffff; --text: #1f2328; --muted: #6b6f76;
-    --line: #e3e0da; --accent: #2d5a8e; --tag: #eef2f7;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg: #121417; --card: #1b1e22; --text: #e8e8e6; --muted: #9aa0a6;
-            --line: #2a2e33; --accent: #8ab4e8; --tag: #232830; }
-  }
+  :root { --bg:#f3f1ec; --card:#fff; --text:#1d2126; --muted:#646a72; --line:#e2ded6; --accent:#2d5a8e; --err:#b0372b; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#111417; --card:#1a1e22; --text:#e7e7e4; --muted:#9aa1a8; --line:#2a2f35; --accent:#8ab4e8; --err:#f07a6c; } }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--text);
-         font-family: -apple-system, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif; line-height: 1.6; }
-  main { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
-  .back { font-size: 14px; color: var(--accent); text-decoration: none; }
-  h1 { font-size: 28px; margin: 14px 0 4px; }
-  .sub { color: var(--muted); margin: 0 0 24px; font-size: 15px; }
-  .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
-  a.card { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 14px;
-           padding: 16px 18px; color: inherit; text-decoration: none; transition: border-color .15s, transform .15s; }
-  a.card:hover { border-color: var(--accent); transform: translateY(-1px); }
-  .top { display: flex; align-items: center; gap: 10px; }
-  .icon { font-size: 26px; line-height: 1; }
-  .name { font-weight: 700; font-size: 17px; }
-  .desc { color: var(--muted); font-size: 14px; margin: 6px 0 0; }
-  .tag { display: inline-block; font-size: 11px; background: var(--tag); color: var(--muted);
-         border-radius: 6px; padding: 1px 7px; margin-left: auto; }
-  .lock { font-size: 14px; }
+  body { margin:0; min-height:100vh; display:grid; place-items:center; background:var(--bg); color:var(--text);
+         font-family:-apple-system,"Segoe UI","Noto Sans TC","Microsoft JhengHei",sans-serif; padding:16px; }
+  form { width:100%; max-width:360px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:24px; }
+  h1 { font-size:20px; margin:0 0 4px; }
+  p { color:var(--muted); font-size:14px; margin:0 0 16px; }
+  input[type=password] { width:100%; font:inherit; font-size:18px; padding:10px 12px; border:1px solid var(--line); border-radius:10px;
+                         background:var(--bg); color:var(--text); letter-spacing:.1em; }
+  label.rm { display:flex; gap:8px; align-items:center; font-size:14px; color:var(--muted); margin:12px 0; }
+  button { width:100%; font:inherit; font-size:16px; padding:10px; border:0; border-radius:10px; background:var(--accent); color:var(--card); cursor:pointer; }
+  .err { color:var(--err); font-size:14px; min-height:20px; margin-top:10px; }
+  a { color:var(--accent); font-size:14px; }
 </style>
 </head>
 <body>
-<main>
-  <a class="back" href="../" data-zh="← agan0617 的網頁" data-en="← agan0617" data-ja="← agan0617 のページ">← agan0617 的網頁</a>
-  <h1 data-zh="遊戲攻略" data-en="Game Guides" data-ja="ゲーム攻略">遊戲攻略</h1>
-  <p class="sub" data-zh="自己玩的遊戲，整理的攻略。" data-en="Guides for games I play." data-ja="自分がプレイしたゲームの攻略まとめ。">自己玩的遊戲，整理的攻略。</p>
-  <div class="grid" id="grid"></div>
-</main>
+<form id="f">
+  <h1>🔒 遊戲攻略</h1>
+  <p>這是私人頁面，請輸入密碼。</p>
+  <input type="password" id="pw" autocomplete="current-password" inputmode="numeric" autofocus aria-label="密碼">
+  <label class="rm"><input type="checkbox" id="rm"> 記住這台裝置</label>
+  <button type="submit" id="go">打開</button>
+  <div class="err" id="err" role="alert"></div>
+  <a href="../">← 回首頁</a>
+</form>
 <script>
-/* 攻略清單。新攻略放這個資料夾的子資料夾（例如 "ff7rebirth/"），在這裡加一筆；private: true＝要密碼 */
-const GUIDES = [
-  { icon: "⚔️", name: "FF7 重生", desc: "不劇透系統攻略：戰鬥、魔晶石、隊伍、探索、女王之血。", url: "ff7rebirth/", tag: "RPG", private: true,
-    en: { name: "FF7 Rebirth", desc: "Spoiler-free systems guide: combat, materia, party, exploration, Queen's Blood." },
-    ja: { name: "FF7 リバース", desc: "ネタバレなしのシステム攻略：バトル、マテリア、パーティ、探索、クイーンズ・ブラッド。" } },
-];
-
-const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-// 語言跟首頁一致（首頁選過的語言存在同一個網站的 localStorage）
-let l = null;
-try { l = localStorage.getItem("lang"); } catch (e) {}
-l = l || (/^zh/i.test(navigator.language) ? "zh" : /^ja/i.test(navigator.language) ? "ja" : "en");
-document.documentElement.lang = l === "zh" ? "zh-Hant" : l;
-document.querySelectorAll("[data-zh]").forEach(el => { el.textContent = el.dataset[l]; });
-document.getElementById("grid").innerHTML = GUIDES.map(g => {
-  const t = Object.assign({}, g, l !== "zh" && g[l] ? g[l] : {});
-  return `<a class="card" href="${esc(g.url)}">
-    <div class="top"><span class="icon">${g.icon}</span><span class="name">${esc(t.name)}</span>${g.private ? `<span class="lock" title="私人頁面">🔒</span>` : ""}${t.tag ? `<span class="tag">${esc(t.tag)}</span>` : ""}</div>
-    <div class="desc">${esc(t.desc)}</div></a>`;
-}).join("");
+const P = {"salt":"BaLDQdVZg2kqt+8id9zwJw==","iv":"RcNZfGGAUb6jck45","ct":"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","iter":600000};
+const KEY = "privpw";
+const u8 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function open(pw) {
+  const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
+  const key = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: u8(P.salt), iterations: P.iter, hash: "SHA-256" },
+    base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+  const html = new TextDecoder().decode(await crypto.subtle.decrypt({ name: "AES-GCM", iv: u8(P.iv) }, key, u8(P.ct)));
+  document.open(); document.write(html); document.close();
+}
+const get = k => { try { return localStorage.getItem(k) || sessionStorage.getItem(k); } catch (e) { return null; } };
+const f = document.getElementById("f"), err = document.getElementById("err"), go = document.getElementById("go");
+f.addEventListener("submit", async e => {
+  e.preventDefault();
+  const pw = document.getElementById("pw").value;
+  const remember = document.getElementById("rm").checked;   // 解密後整頁會換掉，要先讀
+  go.disabled = true; go.textContent = "解密中…"; err.textContent = "";
+  try {
+    await open(pw);
+    try { (remember ? localStorage : sessionStorage).setItem(KEY, pw); } catch (e) {}
+  } catch (x) {
+    err.textContent = "密碼不對，再試一次。"; go.disabled = false; go.textContent = "打開";
+  }
+});
+// 這台裝置記過密碼（或同一個分頁階段輸入過）就直接打開
+const saved = get(KEY);
+if (saved) open(saved).catch(() => { try { localStorage.removeItem(KEY); sessionStorage.removeItem(KEY); } catch (e) {} });
 </script>
 </body>
 </html>
