@@ -8,5 +8,15 @@
     "src": "_private/ff7rebirth.html",
     "out": "guides/ff7rebirth/index.html",
     "title": "FF7 重生攻略"
+  },
+  {
+    "src": "_private/lyrics.html",
+    "out": "lyrics/index.html",
+    "title": "歌詞"
+  },
+  {
+    "src": "_private/lyrics_shiawase.html",
+    "out": "lyrics/shiawase-na-ketsumatsu/index.html",
+    "title": "幸せな結末"
   }
 ]
