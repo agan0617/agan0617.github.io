@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>遊戲攻略</title>
+<meta name="description" content="agan0617 的遊戲攻略專區">
+<style>
+  :root {
+    --bg: #f4f2ee; --card: #ffffff; --text: #1f2328; --muted: #6b6f76;
+    --line: #e3e0da; --accent: #2d5a8e; --tag: #eef2f7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #121417; --card: #1b1e22; --text: #e8e8e6; --muted: #9aa0a6;
+            --line: #2a2e33; --accent: #8ab4e8; --tag: #232830; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font-family: -apple-system, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif; line-height: 1.6; }
+  main { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+  .back { font-size: 14px; color: var(--accent); text-decoration: none; }
+  h1 { font-size: 28px; margin: 14px 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 24px; font-size: 15px; }
+  .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  a.card { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+           padding: 16px 18px; color: inherit; text-decoration: none; transition: border-color .15s, transform .15s; }
+  a.card:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .top { display: flex; align-items: center; gap: 10px; }
+  .icon { font-size: 26px; line-height: 1; }
+  .name { font-weight: 700; font-size: 17px; }
+  .desc { color: var(--muted); font-size: 14px; margin: 6px 0 0; }
+  .tag { display: inline-block; font-size: 11px; background: var(--tag); color: var(--muted);
+         border-radius: 6px; padding: 1px 7px; margin-left: auto; }
+  .lock { font-size: 14px; }
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../" data-zh="← agan0617 的網頁" data-en="← agan0617" data-ja="← agan0617 のページ">← agan0617 的網頁</a>
+  <h1 data-zh="遊戲攻略" data-en="Game Guides" data-ja="ゲーム攻略">遊戲攻略</h1>
+  <p class="sub" data-zh="自己玩的遊戲，整理的攻略。" data-en="Guides for games I play." data-ja="自分がプレイしたゲームの攻略まとめ。">自己玩的遊戲，整理的攻略。</p>
+  <div class="grid" id="grid"></div>
+</main>
+<script>
+/* 攻略清單。新攻略放這個資料夾的子資料夾（例如 "ff7rebirth/"），在這裡加一筆；private: true＝要密碼 */
+const GUIDES = [
+  { icon: "⚔️", name: "FF7 重生", desc: "不劇透系統攻略：戰鬥、魔晶石、隊伍、探索、女王之血。", url: "ff7rebirth/", tag: "RPG", private: true,
+    en: { name: "FF7 Rebirth", desc: "Spoiler-free systems guide: combat, materia, party, exploration, Queen's Blood." },
+    ja: { name: "FF7 リバース", desc: "ネタバレなしのシステム攻略：バトル、マテリア、パーティ、探索、クイーンズ・ブラッド。" } },
+];
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+// 語言跟首頁一致（首頁選過的語言存在同一個網站的 localStorage）
+let l = null;
+try { l = localStorage.getItem("lang"); } catch (e) {}
+l = l || (/^zh/i.test(navigator.language) ? "zh" : /^ja/i.test(navigator.language) ? "ja" : "en");
+document.documentElement.lang = l === "zh" ? "zh-Hant" : l;
+document.querySelectorAll("[data-zh]").forEach(el => { el.textContent = el.dataset[l]; });
+document.getElementById("grid").innerHTML = GUIDES.map(g => {
+  const t = Object.assign({}, g, l !== "zh" && g[l] ? g[l] : {});
+  return `<a class="card" href="${esc(g.url)}">
+    <div class="top"><span class="icon">${g.icon}</span><span class="name">${esc(t.name)}</span>${g.private ? `<span class="lock" title="私人頁面">🔒</span>` : ""}${t.tag ? `<span class="tag">${esc(t.tag)}</span>` : ""}</div>
+    <div class="desc">${esc(t.desc)}</div></a>`;
+}).join("");
+</script>
+</body>
+</html>

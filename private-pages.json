@@ -1,3 +1,7 @@
 [
-  { "src": "_private/ff7rebirth.html", "out": "ff7rebirth/index.html", "title": "FF7 重生攻略" }
+  {
+    "src": "_private/ff7rebirth.html",
+    "out": "guides/ff7rebirth/index.html",
+    "title": "FF7 重生攻略"
+  }
 ]
