@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>agan0617 的網頁</title>
+<meta name="description" content="agan0617 的靜態網頁總覽">
+<style>
+  :root {
+    --bg: #f4f2ee; --card: #ffffff; --text: #1f2328; --muted: #6b6f76;
+    --line: #e3e0da; --accent: #2d5a8e; --tag: #eef2f7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #121417; --card: #1b1e22; --text: #e8e8e6; --muted: #9aa0a6;
+            --line: #2a2e33; --accent: #8ab4e8; --tag: #232830; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font-family: -apple-system, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif; line-height: 1.6; }
+  main { max-width: 760px; margin: 0 auto; padding: 40px 16px 64px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: .02em; }
+  .sub { color: var(--muted); margin: 0 0 28px; font-size: 15px; }
+  .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  a.card { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+           padding: 16px 18px; color: inherit; text-decoration: none; transition: border-color .15s, transform .15s; }
+  a.card:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .top { display: flex; align-items: center; gap: 10px; }
+  .icon { font-size: 26px; line-height: 1; }
+  .name { font-weight: 700; font-size: 17px; }
+  .desc { color: var(--muted); font-size: 14px; margin: 6px 0 10px; }
+  .url { font-size: 12px; color: var(--accent); word-break: break-all; }
+  .tag { display: inline-block; font-size: 11px; background: var(--tag); color: var(--muted);
+         border-radius: 6px; padding: 1px 7px; margin-left: auto; }
+  footer { margin-top: 36px; color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>agan0617 的網頁</h1>
+  <p class="sub">自己做的小工具與小遊戲。</p>
+  <div class="grid" id="grid"></div>
+  <footer>新增網頁：在 index.html 的 <code>PAGES</code> 清單加一筆。</footer>
+</main>
+<script>
+/* 所有網頁的清單。url 可以是這個 repo 裡的子資料夾（例如 "snake/"），也可以是其他 repo 的 GitHub Pages 網址 */
+const PAGES = [
+  { icon: "📚", name: "K書吧", desc: "AI 書閱讀器：書架、閱讀進度同步、朗讀。", url: "https://agan0617.github.io/KBookBar/", tag: "工具" },
+  { icon: "🐱", name: "AnnoyingCats", desc: "Cocos Creator 做的小遊戲。", url: "https://agan0617.github.io/AnnoyingCats/", tag: "遊戲" },
+];
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+document.getElementById("grid").innerHTML = PAGES.map(p => `
+  <a class="card" href="${esc(p.url)}">
+    <div class="top"><span class="icon">${p.icon}</span><span class="name">${esc(p.name)}</span>${p.tag ? `<span class="tag">${esc(p.tag)}</span>` : ""}</div>
+    <div class="desc">${esc(p.desc)}</div>
+    <div class="url">${esc(p.url.replace(/^https:\/\//, ""))}</div>
+  </a>`).join("");
+</script>
+</body>
+</html>
