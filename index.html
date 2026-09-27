@@ -19,7 +19,12 @@
          font-family: -apple-system, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif; line-height: 1.6; }
   main { max-width: 760px; margin: 0 auto; padding: 40px 16px 64px; }
   h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: .02em; }
-  .sub { color: var(--muted); margin: 0 0 28px; font-size: 15px; }
+  .sub { color: var(--muted); margin: 0 0 20px; font-size: 15px; }
+  .about { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; margin: 16px 0 32px; }
+  .about p { margin: 0; font-size: 16px; }
+  .about .exp { margin-top: 8px; color: var(--muted); font-size: 14px; }
+  .about .exp span { display: inline-block; font-size: 12px; background: var(--tag); border-radius: 6px; padding: 1px 8px; margin-right: 10px; }
+  h2 { font-size: 18px; margin: 0 0 2px; }
   .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
   a.card { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 14px;
            padding: 16px 18px; color: inherit; text-decoration: none; transition: border-color .15s, transform .15s; }
@@ -36,7 +41,12 @@
 </head>
 <body>
 <main>
-  <h1>agan0617 的網頁</h1>
+  <h1>agan0617</h1>
+  <section class="about">
+    <p>1982 年生，資深遊戲程式工程師。</p>
+    <p class="exp"><span>經歷</span>IGS　·　IGG　·　MediaTek</p>
+  </section>
+  <h2>我做的網頁</h2>
   <p class="sub">自己做的小工具與小遊戲。</p>
   <div class="grid" id="grid"></div>
   <footer>新增網頁：在 index.html 的 <code>PAGES</code> 清單加一筆。</footer>
