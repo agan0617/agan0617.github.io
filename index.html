@@ -53,6 +53,7 @@
   .url { font-size: 12px; color: var(--accent); word-break: break-all; }
   .tag { display: inline-block; font-size: 11px; background: var(--tag); color: var(--muted);
          border-radius: 6px; padding: 1px 7px; margin-left: auto; }
+  .lock { font-size: 14px; }
   footer { margin-top: 36px; color: var(--muted); font-size: 12px; }
 </style>
 </head>
@@ -133,7 +134,8 @@
   </section>
 </main>
 <script>
-/* 所有網頁的清單。url 可以是這個 repo 裡的子資料夾（例如 "snake/"），也可以是其他 repo 的 GitHub Pages 網址 */
+/* 所有網頁的清單。url 可以是這個 repo 裡的子資料夾（例如 "snake/"），也可以是其他 repo 的 GitHub Pages 網址。
+   private: true＝私人頁面（要密碼），做法見 README〈私人頁面〉 */
 const PAGES = [
   { icon: "📚", name: "K書吧", desc: "AI 書閱讀器：書架、閱讀進度同步、朗讀。", url: "https://agan0617.github.io/KBookBar/", tag: "工具",
     en: { desc: "AI book reader: bookshelf, synced reading progress, text-to-speech.", tag: "Tool" },
@@ -141,6 +143,9 @@ const PAGES = [
   { icon: "🐱", name: "AnnoyingCats", desc: "Cocos Creator 做的小遊戲。", url: "https://agan0617.github.io/AnnoyingCats/", tag: "遊戲",
     en: { desc: "A mini game made with Cocos Creator.", tag: "Game" },
     ja: { desc: "Cocos Creator で作ったミニゲーム。", tag: "ゲーム" } },
+  { icon: "⚔️", name: "FF7 重生攻略", desc: "不劇透系統攻略：戰鬥、魔晶石、隊伍、探索、女王之血。", url: "ff7rebirth/", tag: "攻略", private: true,
+    en: { name: "FF7 Rebirth Guide", desc: "Spoiler-free systems guide: combat, materia, party, exploration, Queen's Blood.", tag: "Guide" },
+    ja: { name: "FF7 リバース攻略", desc: "ネタバレなしのシステム攻略：バトル、マテリア、パーティ、探索、クイーンズ・ブラッド。", tag: "攻略" } },
 ];
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -149,7 +154,7 @@ function renderPages(l) {
     const t = Object.assign({}, p, l !== "zh" && p[l] ? p[l] : {});   // en／ja 裡有的欄位蓋過中文
     return `
   <a class="card" href="${esc(p.url)}">
-    <div class="top"><span class="icon">${p.icon}</span><span class="name">${esc(t.name)}</span>${t.tag ? `<span class="tag">${esc(t.tag)}</span>` : ""}</div>
+    <div class="top"><span class="icon">${p.icon}</span><span class="name">${esc(t.name)}</span>${p.private ? `<span class="lock" title="私人頁面，需要密碼">🔒</span>` : ""}${t.tag ? `<span class="tag">${esc(t.tag)}</span>` : ""}</div>
     <div class="desc">${esc(t.desc)}</div>
     <div class="url">${esc(p.url.replace(/^https:\/\//, ""))}</div>
   </a>`;
