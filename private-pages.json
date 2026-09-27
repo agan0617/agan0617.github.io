@@ -12,7 +12,7 @@
   {
     "src": "_private/lyrics.html",
     "out": "lyrics/index.html",
-    "title": "歌詞"
+    "title": "歌詞專區"
   },
   {
     "src": "_private/lyrics_shiawase.html",
