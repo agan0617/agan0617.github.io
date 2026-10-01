@@ -10,6 +10,11 @@
     "title": "FF7 重生攻略"
   },
   {
+    "src": "_private/magictower.html",
+    "out": "guides/magictower/index.html",
+    "title": "魔塔通關攻略"
+  },
+  {
     "src": "_private/lyrics.html",
     "out": "lyrics/index.html",
     "title": "歌詞專區"
