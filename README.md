@@ -29,4 +29,4 @@ GitHub Pages 只能放公開檔案，所以私人頁面是**加密後才上傳**
 | 網頁 | 網址 | 來源 |
 |---|---|---|
 | K書吧 | https://agan0617.github.io/KBookBar/ | repo `KBookBar` |
-| AnnoyingCats | https://agan0617.github.io/AnnoyingCats/ | repo `AnnoyingCats` |
+| 貓貓好煩（AnnoyingCats） | https://agan0617.github.io/AnnoyingCats/ | repo `AnnoyingCats` |
