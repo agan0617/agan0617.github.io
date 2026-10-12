@@ -15,6 +15,11 @@
     "title": "魔塔通關攻略"
   },
   {
+    "src": "_private/starcraft.html",
+    "out": "guides/starcraft/index.html",
+    "title": "星海爭霸 重製版攻略"
+  },
+  {
     "src": "_private/lyrics.html",
     "out": "lyrics/index.html",
     "title": "歌詞專區"
