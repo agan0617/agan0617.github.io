@@ -20,6 +20,11 @@
     "title": "星海爭霸 重製版攻略"
   },
   {
+    "src": "_private/starcraft2.html",
+    "out": "guides/starcraft2/index.html",
+    "title": "星海爭霸 II 三部曲攻略"
+  },
+  {
     "src": "_private/lyrics.html",
     "out": "lyrics/index.html",
     "title": "歌詞專區"
