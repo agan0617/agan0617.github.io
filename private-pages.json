@@ -25,6 +25,11 @@
     "title": "星海爭霸 II 三部曲攻略"
   },
   {
+    "src": "_private/dbfz.html",
+    "out": "guides/dbfz/index.html",
+    "title": "七龍珠 FighterZ 連段攻略"
+  },
+  {
     "src": "_private/lyrics.html",
     "out": "lyrics/index.html",
     "title": "歌詞專區"
