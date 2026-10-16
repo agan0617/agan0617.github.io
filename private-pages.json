@@ -30,6 +30,16 @@
     "title": "七龍珠 FighterZ 連段攻略"
   },
   {
+    "src": "_private/talks.html",
+    "out": "talks/index.html",
+    "title": "演講專區"
+  },
+  {
+    "src": "_private/talk_rea.html",
+    "out": "talks/rea-rotate-rings/index.html",
+    "title": "用 REA 拆解競品，學別人做得好的地方"
+  },
+  {
     "src": "_private/lyrics.html",
     "out": "lyrics/index.html",
     "title": "歌詞專區"
