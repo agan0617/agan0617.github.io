@@ -4,7 +4,8 @@
 // 用法（在 repo 根目錄）：
 //   SITE_PASSWORD_FILE=<存密碼的檔案> node tools/encrypt.mjs
 //   或 SITE_PASSWORD=<密碼> node tools/encrypt.mjs
-// 要加密哪些頁寫在 private-pages.json：[{ "src": "_private/x.html", "out": "x/index.html", "title": "標題" }]
+// 要加密哪些頁寫在 private-pages.json：[{ "src": "_private/x.html", "out": "x/index.html" }]
+// 密碼畫面一律只寫「私人頁面」，不放各頁標題——repo 是公開的，標題寫在外面就等於公開了。
 //
 // 加密：PBKDF2-SHA256（600,000 次）導出 AES-GCM-256 金鑰，每頁隨機 salt 與 iv。
 import { webcrypto as crypto } from "node:crypto";
@@ -31,16 +32,14 @@ async function encrypt(text) {
   return { salt: b64(salt), iv: b64(iv), ct: b64(ct), iter: ITER };
 }
 
-const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-
-function page(title, payload) {
+function page(payload) {
   return `<!doctype html>
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>${esc(title)}（私人頁面）</title>
+<title>私人頁面</title>
 <style>
   :root { --bg:#f3f1ec; --card:#fff; --text:#1d2126; --muted:#646a72; --line:#e2ded6; --accent:#2d5a8e; --err:#b0372b; }
   @media (prefers-color-scheme: dark) { :root { --bg:#111417; --card:#1a1e22; --text:#e7e7e4; --muted:#9aa1a8; --line:#2a2f35; --accent:#8ab4e8; --err:#f07a6c; } }
@@ -60,9 +59,9 @@ function page(title, payload) {
 </head>
 <body>
 <form id="f">
-  <h1>🔒 ${esc(title)}</h1>
-  <p>這是私人頁面，請輸入密碼。</p>
-  <input type="password" id="pw" autocomplete="current-password" inputmode="numeric" autofocus aria-label="密碼">
+  <h1>🔒 私人頁面</h1>
+  <p>請輸入密碼。</p>
+  <input type="password" id="pw" autocomplete="current-password" autocapitalize="off" spellcheck="false" autofocus aria-label="密碼">
   <label class="rm"><input type="checkbox" id="rm"> 記住這台裝置</label>
   <button type="submit" id="go">打開</button>
   <div class="err" id="err" role="alert"></div>
@@ -107,6 +106,6 @@ for (const p of list) {
   const src = readFileSync(join(ROOT, p.src), "utf8");
   const out = join(ROOT, p.out);
   mkdirSync(dirname(out), { recursive: true });
-  writeFileSync(out, page(p.title, await encrypt(src)));
+  writeFileSync(out, page(await encrypt(src)));
   console.log(`加密 ${p.src} → ${p.out}`);
 }

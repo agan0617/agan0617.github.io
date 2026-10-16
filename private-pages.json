@@ -1,52 +1,42 @@
 [
   {
     "src": "_private/guides.html",
-    "out": "guides/index.html",
-    "title": "遊戲攻略"
+    "out": "guides/index.html"
   },
   {
     "src": "_private/ff7rebirth.html",
-    "out": "guides/ff7rebirth/index.html",
-    "title": "FF7 重生攻略"
+    "out": "guides/ff7rebirth/index.html"
   },
   {
     "src": "_private/magictower.html",
-    "out": "guides/magictower/index.html",
-    "title": "魔塔通關攻略"
+    "out": "guides/magictower/index.html"
   },
   {
     "src": "_private/starcraft.html",
-    "out": "guides/starcraft/index.html",
-    "title": "星海爭霸 重製版攻略"
+    "out": "guides/starcraft/index.html"
   },
   {
     "src": "_private/starcraft2.html",
-    "out": "guides/starcraft2/index.html",
-    "title": "星海爭霸 II 三部曲攻略"
+    "out": "guides/starcraft2/index.html"
   },
   {
     "src": "_private/dbfz.html",
-    "out": "guides/dbfz/index.html",
-    "title": "七龍珠 FighterZ 連段攻略"
+    "out": "guides/dbfz/index.html"
   },
   {
     "src": "_private/talks.html",
-    "out": "talks/index.html",
-    "title": "演講專區"
+    "out": "talks/index.html"
   },
   {
     "src": "_private/talk_rea.html",
-    "out": "talks/rea-rotate-rings/index.html",
-    "title": "用 REA 拆解競品，學別人做得好的地方"
+    "out": "talks/rea-rotate-rings/index.html"
   },
   {
     "src": "_private/lyrics.html",
-    "out": "lyrics/index.html",
-    "title": "歌詞專區"
+    "out": "lyrics/index.html"
   },
   {
     "src": "_private/lyrics_shiawase.html",
-    "out": "lyrics/shiawase-na-ketsumatsu/index.html",
-    "title": "幸せな結末"
+    "out": "lyrics/shiawase-na-ketsumatsu/index.html"
   }
 ]

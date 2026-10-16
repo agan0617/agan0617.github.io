@@ -15,14 +15,14 @@
 GitHub Pages 只能放公開檔案，所以私人頁面是**加密後才上傳**：
 
 1. 明文原稿放 `_private/`（已在 `.gitignore`，**不會進 repo**，只存在本機）
-2. 在 `private-pages.json` 加一筆 `{ "src": "_private/x.html", "out": "x/index.html", "title": "標題" }`
-3. 執行 `SITE_PASSWORD_FILE=<密碼檔> node tools/encrypt.mjs`，產生加密後的 `x/index.html`（只有密文與輸入密碼的畫面）
+2. 在 `private-pages.json` 加一筆 `{ "src": "_private/x.html", "out": "x/index.html" }`（不寫標題：這個檔是公開的）
+3. 執行 `SITE_PASSWORD_FILE=<密碼檔> node tools/encrypt.mjs`，產生加密後的 `x/index.html`（只有密文與輸入密碼的畫面，畫面一律只寫「私人頁面」，各頁真正的標題在密文裡）
 4. 首頁 `PAGES` 那筆加 `private: true`（卡片會顯示 🔒）
 5. commit、push
 
 打開時在瀏覽器輸入密碼，用 WebCrypto（PBKDF2-SHA256 60 萬次＋AES-GCM）在本機解密；勾「記住這台裝置」會把密碼存在該瀏覽器。改了原稿要重新執行第 3 步。
 
-⚠️ 這是擋一般人的鎖，不是保險箱：密文是公開的，密碼太短就可能被離線暴力破解，別放真正機密的東西。
+⚠️ 這是擋一般人的鎖，不是保險箱：密文是公開的，任何人都能下載回去離線猜密碼，所以**密碼要 12 字以上、英數混合**（純數字幾小時就能被顯卡試完）。換密碼只保護之後推上去的密文，舊密文仍留在 git 歷史裡。網址路徑（如 `guides/xxx/`）也是公開的，命名時別洩漏內容。別放真正機密的東西。
 
 ## 目前的網頁
 
