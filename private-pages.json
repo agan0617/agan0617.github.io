@@ -32,6 +32,10 @@
     "out": "talks/rea-rotate-rings/index.html"
   },
   {
+    "src": "_private/talk_monthly_2026_10.html",
+    "out": "talks/rd-monthly-2026-10/index.html"
+  },
+  {
     "src": "_private/lyrics.html",
     "out": "lyrics/index.html"
   },
