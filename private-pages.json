@@ -1,5 +1,9 @@
 [
   {
+    "src": "_private/private.html",
+    "out": "private/index.html"
+  },
+  {
     "src": "_private/guides.html",
     "out": "guides/index.html"
   },
