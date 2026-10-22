@@ -44,3 +44,9 @@ SITE_PASSWORD_FILE=<密碼檔> node tools/decrypt.mjs
 |---|---|---|
 | K書吧 | https://agan0617.github.io/KBookBar/ | repo `KBookBar` |
 | 貓貓好煩（AnnoyingCats） | https://agan0617.github.io/AnnoyingCats/ | repo `AnnoyingCats` |
+
+## 版權
+
+Copyright © 2026 agan0617. All rights reserved. 保留所有權利，詳見 [LICENSE](LICENSE)。
+
+攻略、歌詞等頁面引用的外部資料，出處標在各頁內；遊戲與歌曲的名稱、內容版權屬原權利人。
