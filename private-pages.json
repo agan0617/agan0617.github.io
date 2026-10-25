@@ -46,5 +46,9 @@
   {
     "src": "_private/lyrics_shiawase.html",
     "out": "lyrics/shiawase-na-ketsumatsu/index.html"
+  },
+  {
+    "src": "_private/jp_practice.html",
+    "out": "jp-practice/index.html"
   }
 ]
