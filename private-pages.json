@@ -40,6 +40,10 @@
     "out": "talks/rd-monthly-2026-10/index.html"
   },
   {
+    "src": "_private/talk_server_scaling_2026_10.html",
+    "out": "talks/server-scaling-2026-10/index.html"
+  },
+  {
     "src": "_private/lyrics.html",
     "out": "lyrics/index.html"
   },
