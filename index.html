@@ -413,7 +413,7 @@ footer a { display: inline-block; padding-block: 12px; font-weight: 700; backgro
    沒有 featured 的列在「其他工具與 App」。私人專區的入口在頁尾，不在這裡。 */
 const PAGES = [
   { icon: "📚", name: "K書吧", desc: "電子書閱讀器：書架、閱讀進度同步、朗讀。", url: "https://agan0617.github.io/KBookBar/", tag: "工具",
-    featured: 1, img: "img/works/kbookbar.webp", w: 1440, h: 900, short: "電子書閱讀器：書架、進度同步、朗讀。",
+    featured: 1, img: "img/works/kbookbar.webp", w: 1440, h: 900, pv: "video/kbookbar-pv.mp4", pvPoster: "video/kbookbar-pv.webp", short: "電子書閱讀器：書架、進度同步、朗讀。",
     en: { desc: "E-book reader: bookshelf, synced reading progress, text-to-speech.", tag: "Tool", short: "E-book reader with synced progress and read-aloud." },
     ja: { desc: "電子書籍リーダー：本棚、読書進捗の同期、読み上げ。", tag: "ツール", short: "本棚、進捗同期、読み上げつきの電子書籍リーダー。" } },
   { icon: "📖", name: "K書吧 App", desc: "K書吧的 Android App：背景、關螢幕也能朗讀。APK 在 Releases。", url: "https://github.com/agan0617/KBookBarApp", tag: "App",
@@ -462,7 +462,7 @@ const PAGES = [
 ];
 
 /* 版號：改首頁就加版號 */
-const SITE_VERSION = "2.2.0";
+const SITE_VERSION = "2.2.1";
 document.getElementById("ver").textContent = "v" + SITE_VERSION;
 
 const PV_LABEL = { zh: "介紹影片", en: "Intro video", ja: "紹介動画" };
