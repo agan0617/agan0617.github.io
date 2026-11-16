@@ -18,7 +18,7 @@
 /* Hallmark · pre-emit critique: P4 H4 E3 S4 R3 V4 · weakest: E, the hero has no picture, so the works start above the fold and carry it */
 /* Hallmark · waive 26b · not a form control, no aria-disabled anywhere · the only buttons on this page are the three language switches, and none is ever disabled */
 /* Hallmark · reworded "Ken" to "Kanyao Chang" · the name moved into the h1, Ken stays as the wordmark */
-/* Hallmark · reworded "我做的網頁" to "打開就能玩的五個" · the one list became the five featured works and the other tools */
+/* Hallmark · reworded "我做的網頁" to "點擊就能玩" · the one list became the five featured works and the other tools */
 /* Hallmark · dropped grid · the single card grid became #featured and #others-list, both filled by the same renderPages */
 
 /* ── tokens（Arcade 主題＋共用尺度；中日文字型接在後面） ── */
@@ -247,7 +247,7 @@ footer a { font-weight: 700; text-decoration-color: var(--color-accent-2); text-
 
   <section class="works" id="works">
     <div class="container">
-      <h2 data-zh="打開就能玩的五個" data-en="Five you can play now" data-ja="すぐ遊べる 5 本">打開就能玩的五個</h2>
+      <h2 data-zh="點擊就能玩" data-en="Click to play" data-ja="クリックで遊べる">點擊就能玩</h2>
       <div class="bento" id="featured"></div>
     </div>
   </section>
@@ -422,17 +422,17 @@ const PAGES = [
 ];
 
 /* 版號：改首頁就加版號 */
-const SITE_VERSION = "2.1.0";
+const SITE_VERSION = "2.1.1";
 document.getElementById("ver").textContent = "v" + SITE_VERSION;
 
-const PV_LABEL = { zh: "看 PV", en: "Watch PV", ja: "PV を見る" };
+const PV_LABEL = { zh: "介紹影片", en: "Intro video", ja: "紹介動画" };
 const GO = { zh: { "遊戲": "開始玩", "工具": "打開" }, en: { "遊戲": "Play", "工具": "Open" }, ja: { "遊戲": "遊ぶ", "工具": "開く" } };
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 function renderPages(l) {
   const tr = p => Object.assign({}, p, l !== "zh" && p[l] ? p[l] : {});   // en／ja 裡有的欄位蓋過中文
   document.getElementById("featured").innerHTML = PAGES.filter(p => p.featured).sort((a, b) => a.featured - b.featured).map((p, i) => {
     const t = tr(p);
-    const pv = p.pv ? `<button type="button" class="pv-btn" data-pv="${esc(p.pv)}" data-poster="${esc(p.pvPoster || "")}" data-title="${esc(t.name)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>${esc(PV_LABEL[l])}</button>` : "";
+    const pv = p.pv ? `<button type="button" class="pv-btn" data-pv="${esc(p.pv)}" data-poster="${esc(p.pvPoster || "")}" data-title="${esc(t.name + " " + PV_LABEL[l])}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>${esc(PV_LABEL[l])}</button>` : "";
     return `
   <article class="tile">
     <div class="shot"><img src="${esc(p.img)}" width="${p.w}" height="${p.h}" alt="" ${i ? 'loading="lazy"' : ""} decoding="async" style="object-position:${p.pos || "50% 50%"}"></div>
@@ -466,7 +466,7 @@ document.getElementById("featured").addEventListener("click", e => {
   const b = e.target.closest(".pv-btn");
   if (!b) return;
   vid.poster = b.dataset.poster; vid.src = b.dataset.pv;
-  dlg.querySelector(".pv-title").textContent = b.dataset.title + " PV";
+  dlg.querySelector(".pv-title").textContent = b.dataset.title;
   dlg.showModal();
   vid.play().catch(() => {});
 });
