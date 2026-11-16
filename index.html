@@ -20,6 +20,10 @@
 /* Hallmark · h1 is "Ken的開發小屋" / "Ken's Dev Cabin" / "Kenの開発小屋" (2026-11-16), Ken stays as the wordmark */
 /* Hallmark · reworded "我做的網頁" to "點擊就能玩" · the one list became the five featured works and the other tools */
 /* Hallmark · dropped grid · the single card grid became #featured and #others-list, both filled by the same renderPages */
+/* taste-skill 2.5.1 · v2.2.0 (2026-11-16) · kind: gaming portfolio
+ * ground: violet (hue 312) → warm charcoal (house rule: never violet) · hero: alone on the first screen, the works as its picture (split: words span-5, a collage of three screenshots span-7)
+ * motion: hero enters once on load (h1 rises, lead and buttons fade up 12px, the collage settles from .98), screenshots zoom 1.03 inside their frame on hover, underlines draw
+ * dropped: the scanline overlay on screenshots (a photograph never takes an overlay) · kept on Ken's ask: the back-to-top button */
 
 /* ── tokens（Arcade 主題＋共用尺度；中日文字型接在後面） ── */
 :root {
@@ -31,12 +35,13 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --dur-micro: 120ms; --dur-short: 220ms;
   --container: 1440px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 120px; --section-gap: 144px;
-  --color-paper: oklch(14% 0.04 312); --color-paper-2: oklch(18.5% 0.042 312); --color-paper-3: oklch(23% 0.045 312);
-  --color-ink: oklch(95% 0.014 315); --color-ink-2: oklch(87% 0.018 315); --color-muted: oklch(71% 0.024 315);
-  --color-rule: oklch(34% 0.05 312);
-  --color-accent: oklch(66% 0.215 40); --color-accent-2: oklch(88% 0.195 115); --color-accent-ink: oklch(14% 0.04 312);
+  --color-paper: oklch(15.5% 0.008 70); --color-paper-2: oklch(20% 0.009 70); --color-paper-3: oklch(24.5% 0.01 70);
+  --color-ink: oklch(96% 0.006 85); --color-ink-2: oklch(87% 0.008 85); --color-muted: oklch(72% 0.012 80);
+  --color-rule: oklch(34% 0.012 70);
+  --color-accent: oklch(66% 0.215 40); --color-accent-2: oklch(88% 0.195 115); --color-accent-ink: oklch(15.5% 0.008 70);
   --color-focus: oklch(88% 0.195 115);
-  --color-crt-r: oklch(63% 0.24 25); --color-crt-g: oklch(80% 0.25 140); --color-crt-b: oklch(60% 0.24 265); --color-crt-c: oklch(78% 0.14 200); --color-shade: oklch(8% 0.02 315);
+  --color-crt-r: oklch(63% 0.24 25); --color-crt-c: oklch(78% 0.14 200); --color-shade: oklch(8% 0.006 70);
+  --ease-enter: cubic-bezier(0.22, 1, 0.36, 1); --nav-h: 72px;
   --font-display: "Bungee", "Impact", "Microsoft JhengHei", "PingFang TC", "Hiragino Sans", sans-serif;
   --font-body: "Chivo", "Microsoft JhengHei", "PingFang TC", "Hiragino Sans", "Yu Gothic", sans-serif;
   --radius-card: 4px; --rule-hair: 1px; --rule-bar: 2px;
@@ -66,11 +71,15 @@ button { font: inherit; }
 
 /* ── nav ── */
 .nav { border-bottom: var(--rule-hair) solid var(--color-rule); }
-.nav .container { min-height: 72px; display: flex; align-items: center; gap: var(--space-lg); }
+.nav .container { min-height: var(--nav-h); display: flex; align-items: center; gap: var(--space-lg); }
 .wordmark { font-family: var(--font-display); font-size: 1.75rem; line-height: 1; text-decoration: none; }
 .nav-links { margin-left: auto; display: flex; align-items: center; gap: var(--space-lg); }
-.nav-links a { font-weight: 700; text-decoration: underline; text-decoration-color: var(--color-accent-2); text-decoration-thickness: 2px; }
-.nav-links a:hover { color: var(--color-accent-2); }
+/* 連結底線：平常一條淡線，游標移上去 lime 線由左往右畫出來 */
+.draw { text-decoration: none; background: linear-gradient(var(--color-accent-2), var(--color-accent-2)) left bottom / 0% 2px no-repeat,
+        linear-gradient(var(--color-rule), var(--color-rule)) left bottom / 100% 2px no-repeat;
+        transition: background-size 150ms var(--ease-out), color 150ms var(--ease-out); }
+.draw:hover, .draw:focus-visible { background-size: 100% 2px, 100% 2px; color: var(--color-accent-2); }
+.nav-links a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; background-position: left calc(100% - 10px), left calc(100% - 10px); }
 .lang { display: flex; border: var(--rule-bar) solid var(--color-rule); border-radius: var(--radius-card); }
 .lang button { min-height: 44px; min-width: 52px; padding: 0 var(--space-sm); border: 0; background: transparent; color: var(--color-ink-2); font-weight: 700; cursor: pointer; white-space: nowrap; }
 @media (max-width: 22rem) { .lang button { min-width: 44px; padding: 0 var(--space-xs); } .wordmark { font-size: 1.5rem; } }
@@ -79,8 +88,22 @@ button { font: inherit; }
 .lang button[aria-pressed="true"] { color: var(--color-accent-2); box-shadow: inset 0 -3px 0 var(--color-accent-2); }
 @media (max-width: 40rem) { .nav-links a { display: none; } }
 
-/* ── hero（Banner：名字、一句話、兩個動作；作品從第一屏下緣就開始） ── */
-.hero { padding-block: var(--space-3xl) var(--section-gap-s); }
+/* ── hero（第一屏只放它：左邊名字、一句話、兩個動作，右邊三張作品截圖疊成一組） ── */
+.hero { min-height: calc(100svh - var(--nav-h)); display: grid; align-items: center; padding-block: var(--space-2xl); }
+.hero .container { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap-columns); align-items: center; }
+.hero-text { grid-column: 1 / span 6; }
+.collage { grid-column: 7 / -1; position: relative; aspect-ratio: 16 / 11.5; }
+.collage figure { position: absolute; margin: 0; overflow: hidden; background: var(--color-paper-3);
+                  border: var(--rule-bar) solid var(--color-ink); border-radius: var(--radius-card); }
+.collage img { width: 100%; height: 100%; object-fit: cover; }
+.collage .c1 { left: 0; top: 0; width: 84%; aspect-ratio: 16 / 10; box-shadow: var(--shadow-card); }
+.collage .c2 { left: 6%; bottom: 0; width: 40%; aspect-ratio: 1; box-shadow: 6px 6px 0 var(--color-accent); }
+.collage .c3 { right: 0; bottom: 4%; width: 26%; aspect-ratio: 9 / 16; box-shadow: 6px 6px 0 var(--color-accent-2); }
+@media (max-width: 60rem) {
+  .hero { padding-block: var(--space-xl); }
+  .hero-text, .collage { grid-column: 1 / -1; }
+  .collage { max-width: 640px; }
+}
 .hero h1 { font-family: var(--font-display); font-weight: 400; font-size: var(--text-display); line-height: 1.02; text-transform: uppercase; max-width: 16ch;
            text-shadow: -1.5px 0 0 var(--color-crt-r), 1.5px 0 0 var(--color-crt-c); }
 .hero .lead { margin-top: var(--space-lg); font-size: var(--text-lead); line-height: 1.5; max-width: 40ch; color: var(--color-ink-2); text-wrap: balance; }
@@ -91,6 +114,17 @@ button { font: inherit; }
 .btn:hover { translate: -2px -2px; box-shadow: 8px 8px 0 var(--color-accent-2); }
 .btn:active { translate: 3px 3px; box-shadow: 2px 2px 0 var(--color-accent-2); }
 .btn--secondary { background: transparent; color: var(--color-ink); }
+
+/* 進場：只在載入時一次——大標升上來，說明與按鈕往上淡入 12px，截圖從 .98 定位；捲動不觸發任何動畫 */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes rise { from { translate: 0 0.5em; opacity: 0; } }
+  @keyframes fade-up { from { translate: 0 12px; opacity: 0; } }
+  @keyframes settle { from { scale: 0.98; opacity: 0; } }
+  .hero h1 { animation: rise 700ms var(--ease-enter) both; }
+  .hero .lead { animation: fade-up 520ms var(--ease-enter) 350ms both; }
+  .hero .actions { animation: fade-up 520ms var(--ease-enter) 410ms both; }
+  .collage { animation: settle 900ms var(--ease-enter) 150ms both; }
+}
 
 /* ── 代表作（bento：魔塔領頭、星海衝突直式、下排三格） ── */
 .works { padding-bottom: var(--section-gap); }
@@ -104,12 +138,12 @@ button { font: inherit; }
 /* 主打兩個（K書吧、K地圖）各佔半寬、兩列高；下排三個 */
 .tile:nth-child(-n+2) { grid-column: span 6; grid-row: span 2; }
 .tile:nth-child(n+3) { grid-column: span 4; }
-.shot { position: relative; isolation: isolate; min-height: 0; background: var(--color-paper-3); }
-.shot img { width: 100%; height: 100%; object-fit: cover; }
-.shot::after { content: ""; position: absolute; inset: 0; pointer-events: none;
-  background-image:
-    repeating-linear-gradient(to right, color-mix(in oklab, var(--color-crt-r) 5%, transparent) 0 1px, color-mix(in oklab, var(--color-crt-g) 5%, transparent) 1px 2px, color-mix(in oklab, var(--color-crt-b) 5%, transparent) 2px 3px),
-    repeating-linear-gradient(to bottom, transparent 0 2px, color-mix(in oklab, var(--color-shade) 16%, transparent) 2px 3px); }
+.shot { position: relative; isolation: isolate; min-height: 0; overflow: hidden; background: var(--color-paper-3); }
+.shot img { width: 100%; height: 100%; object-fit: cover; transition: scale 400ms var(--ease-out); }
+/* 游標移到格子上：截圖在框裡放大 1.03，框本身不變 */
+@media (hover: hover) and (pointer: fine) {
+  .tile:hover .shot img { scale: 1.03; transition-duration: 600ms; }
+}
 .cap { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: var(--space-xs) var(--space-md); padding: var(--space-md) var(--space-lg); border-top: var(--rule-bar) solid var(--color-rule); }
 .cap h3 { grid-column: 1; }
 /* 整格可點：標題的連結往外撐滿整格；「看 PV」按鈕疊在上面 */
@@ -169,8 +203,7 @@ dialog.pv video { display: block; width: 100%; height: auto; max-height: calc(10
 .about .who { margin-top: var(--space-xl); font-weight: 900; font-size: var(--text-xl); line-height: 1.2; }
 .about .who + .links { margin-top: var(--space-sm); }
 .about .links { margin-top: var(--space-md); display: flex; flex-wrap: wrap; gap: var(--space-lg); }
-.about .li { font-weight: 700; text-decoration: underline; text-decoration-color: var(--color-accent-2); text-decoration-thickness: 2px; }
-.about .li:hover { color: var(--color-accent-2); }
+.about .li { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; background-position: left calc(100% - 8px), left calc(100% - 8px); }
 .about .lead { margin-top: var(--space-xl); font-size: var(--text-lead); line-height: 1.55; color: var(--color-ink-2); }
 .about dl { margin: 0; }
 .about dt { font-weight: 900; font-size: var(--text-title); line-height: 1.25; }
@@ -189,7 +222,7 @@ footer { padding-block: var(--space-2xl) var(--space-3xl); border-top: var(--rul
 footer .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-lg); align-items: baseline; }
 footer .sign { font-family: var(--font-display); font-size: var(--text-xl); line-height: 1; }
 footer .meta { color: var(--color-muted); font-size: var(--text-sm); }
-footer a { font-weight: 700; text-decoration-color: var(--color-accent-2); text-decoration-thickness: 2px; }
+footer a { display: inline-block; padding-block: 12px; font-weight: 700; background-position: left calc(100% - 10px), left calc(100% - 10px); }
 
 @media (max-width: 60rem) {
   .others .head, .about .split, .about .jobs li { grid-template-columns: minmax(0, 1fr); }
@@ -224,8 +257,8 @@ footer a { font-weight: 700; text-decoration-color: var(--color-accent-2); text-
   <div class="container">
     <a class="wordmark" href="./" aria-label="Ken 的網頁首頁">KEN</a>
     <nav class="nav-links" aria-label="頁面">
-      <a href="#works" data-zh="作品" data-en="Work" data-ja="作品">作品</a>
-      <a href="#about" data-zh="關於我" data-en="About" data-ja="自己紹介">關於我</a>
+      <a class="draw" href="#works" data-zh="作品" data-en="Work" data-ja="作品">作品</a>
+      <a class="draw" href="#about" data-zh="關於我" data-en="About" data-ja="自己紹介">關於我</a>
     </nav>
     <div class="lang" role="group" aria-label="語言 / Language / 言語">
       <button type="button" data-l="zh" aria-pressed="true">中文</button><button type="button" data-l="en" aria-pressed="false">EN</button><button type="button" data-l="ja" aria-pressed="false">日本語</button>
@@ -236,11 +269,18 @@ footer a { font-weight: 700; text-decoration-color: var(--color-accent-2); text-
 <main>
   <section class="hero">
     <div class="container">
+      <div class="hero-text">
       <h1 data-zh="Ken的開發小屋" data-en="Ken's Dev Cabin" data-ja="Kenの開発小屋">Ken的開發小屋</h1>
       <p class="lead" data-zh="資深遊戲開發者，現在用 AI 自己做遊戲和小工具。挑一款，瀏覽器打開就能玩。" data-en="Veteran game developer, now building my own games and tools with AI. Pick one and play it in your browser." data-ja="ベテランのゲーム開発者。いまは AI で自分のゲームとツールを作っています。ブラウザですぐ遊べます。">資深遊戲開發者，現在用 AI 自己做遊戲和小工具。挑一款，瀏覽器打開就能玩。</p>
       <div class="actions">
         <a class="btn" href="#works" data-zh="挑一款來玩" data-en="Pick a game" data-ja="遊んでみる">挑一款來玩</a>
         <a class="btn btn--secondary" href="#about" data-zh="我的經歷" data-en="My career" data-ja="経歴">我的經歷</a>
+      </div>
+      </div>
+      <div class="collage" aria-hidden="true">
+        <figure class="c1"><img src="img/works/kmap.webp" width="1440" height="900" alt="" fetchpriority="high"></figure>
+        <figure class="c2"><img src="img/works/magictower.webp" width="908" height="900" alt="" style="object-position:50% 62%"></figure>
+        <figure class="c3"><img src="img/works/starclash.webp" width="780" height="1688" alt="" style="object-position:50% 12%"></figure>
       </div>
     </div>
   </section>
@@ -270,7 +310,7 @@ footer a { font-weight: 700; text-decoration-color: var(--color-accent-2); text-
           <div class="me">
             <img class="avatar" src="avatar.jpg" width="160" height="160" alt="Ken 的頭像">
                 <p class="who">Ken (Kanyao Chang)</p>
-            <p class="links"><a class="li" href="https://github.com/agan0617" target="_blank" rel="noopener">GitHub</a><a class="li" href="https://www.linkedin.com/in/kan-yao-chang-822b7965/" target="_blank" rel="noopener">LinkedIn</a><a class="li mail" href="#" data-u="agan0617" data-d="gmail.com">Email</a></p>
+            <p class="links"><a class="li draw" href="https://github.com/agan0617" target="_blank" rel="noopener">GitHub</a><a class="li draw" href="https://www.linkedin.com/in/kan-yao-chang-822b7965/" target="_blank" rel="noopener">LinkedIn</a><a class="li draw mail" href="#" data-u="agan0617" data-d="gmail.com">Email</a></p>
             <p class="lead">遊戲開發經理暨技術專家，1982 年生，擁有 19 年以上手機、街機與跨平台遊戲的開發經驗。擅長系統層級的效能優化與團隊領導，並善用 Claude、Codex 等 AI 工具開發遊戲與應用程式。</p>
               </div>
           <div>
@@ -298,7 +338,7 @@ footer a { font-weight: 700; text-decoration-color: var(--color-accent-2); text-
           <div class="me">
             <img class="avatar" src="avatar.jpg" width="160" height="160" alt="Portrait of Ken">
                 <p class="who">Ken (Kanyao Chang)</p>
-            <p class="links"><a class="li" href="https://github.com/agan0617" target="_blank" rel="noopener">GitHub</a><a class="li" href="https://www.linkedin.com/in/kan-yao-chang-822b7965/" target="_blank" rel="noopener">LinkedIn</a><a class="li mail" href="#" data-u="agan0617" data-d="gmail.com">Email</a></p>
+            <p class="links"><a class="li draw" href="https://github.com/agan0617" target="_blank" rel="noopener">GitHub</a><a class="li draw" href="https://www.linkedin.com/in/kan-yao-chang-822b7965/" target="_blank" rel="noopener">LinkedIn</a><a class="li draw mail" href="#" data-u="agan0617" data-d="gmail.com">Email</a></p>
             <p class="lead">Game Development Manager &amp; Technical Specialist, born in 1982, with 19+ years of industry experience across mobile, arcade, and cross-platform games. Skilled in system-level performance optimization and team leadership, and leveraging AI tools (Claude, Codex) to build games and applications.</p>
               </div>
           <div>
@@ -326,7 +366,7 @@ footer a { font-weight: 700; text-decoration-color: var(--color-accent-2); text-
           <div class="me">
             <img class="avatar" src="avatar.jpg" width="160" height="160" alt="Ken の似顔絵">
                 <p class="who">Ken (Kanyao Chang)</p>
-            <p class="links"><a class="li" href="https://github.com/agan0617" target="_blank" rel="noopener">GitHub</a><a class="li" href="https://www.linkedin.com/in/kan-yao-chang-822b7965/" target="_blank" rel="noopener">LinkedIn</a><a class="li mail" href="#" data-u="agan0617" data-d="gmail.com">Email</a></p>
+            <p class="links"><a class="li draw" href="https://github.com/agan0617" target="_blank" rel="noopener">GitHub</a><a class="li draw" href="https://www.linkedin.com/in/kan-yao-chang-822b7965/" target="_blank" rel="noopener">LinkedIn</a><a class="li draw mail" href="#" data-u="agan0617" data-d="gmail.com">Email</a></p>
             <p class="lead">ゲーム開発マネージャー兼テクニカルスペシャリスト。1982 年生まれ。モバイル・アーケード・クロスプラットフォームのゲーム開発で 19 年以上の経験があります。システムレベルのパフォーマンス最適化とチームリーダーシップを得意とし、Claude や Codex などの AI ツールを活用してゲームやアプリを開発しています。</p>
               </div>
           <div>
@@ -356,7 +396,7 @@ footer a { font-weight: 700; text-decoration-color: var(--color-accent-2); text-
 <footer>
   <div class="container">
     <p class="sign">Ken, 2026</p>
-    <p class="meta"><a href="private/" data-zh="私人專區（需要密碼）" data-en="Private (password required)" data-ja="プライベート（パスワードが必要）">私人專區（需要密碼）</a>　<span id="ver"></span></p>
+    <p class="meta"><a class="draw" href="private/" data-zh="私人專區（需要密碼）" data-en="Private (password required)" data-ja="プライベート（パスワードが必要）">私人專區（需要密碼）</a>　<span id="ver"></span></p>
   </div>
 </footer>
 
@@ -422,7 +462,7 @@ const PAGES = [
 ];
 
 /* 版號：改首頁就加版號 */
-const SITE_VERSION = "2.1.2";
+const SITE_VERSION = "2.2.0";
 document.getElementById("ver").textContent = "v" + SITE_VERSION;
 
 const PV_LABEL = { zh: "介紹影片", en: "Intro video", ja: "紹介動画" };
