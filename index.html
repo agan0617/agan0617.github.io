@@ -101,8 +101,8 @@ button { font: inherit; }
         transition: translate var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out); }
 .tile:hover { translate: -2px -2px; box-shadow: var(--shadow-card); border-color: var(--color-ink); }
 .tile:active { translate: 2px 2px; box-shadow: 2px 2px 0 var(--color-accent-2); }
-.tile:nth-child(1) { grid-column: 1 / span 8; grid-row: span 2; }
-.tile:nth-child(2) { grid-column: 9 / span 4; grid-row: span 2; }
+/* 主打兩個（K書吧、K地圖）各佔半寬、兩列高；下排三個 */
+.tile:nth-child(-n+2) { grid-column: span 6; grid-row: span 2; }
 .tile:nth-child(n+3) { grid-column: span 4; }
 .shot { position: relative; isolation: isolate; min-height: 0; background: var(--color-paper-3); }
 .shot img { width: 100%; height: 100%; object-fit: cover; }
@@ -112,16 +112,39 @@ button { font: inherit; }
     repeating-linear-gradient(to bottom, transparent 0 2px, color-mix(in oklab, var(--color-shade) 16%, transparent) 2px 3px); }
 .cap { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: var(--space-xs) var(--space-md); padding: var(--space-md) var(--space-lg); border-top: var(--rule-bar) solid var(--color-rule); }
 .cap h3 { grid-column: 1; }
+/* 整格可點：標題的連結往外撐滿整格；「看 PV」按鈕疊在上面 */
+.cap a.cover { text-decoration: none; }
+.cap a.cover::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+.cap a.cover:focus-visible { outline: none; }
+.tile:has(a.cover:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: 3px; }
 .cap p { grid-column: 1; color: var(--color-muted); font-size: var(--text-md); line-height: 1.5; }
-.cap .go { grid-column: 2; grid-row: 1 / span 2; align-self: center; font-weight: 700; color: var(--color-accent); white-space: nowrap;
+.cap .acts { grid-column: 2; grid-row: 1 / span 2; align-self: center; display: flex; align-items: center; gap: var(--space-md); }
+.cap .go { font-weight: 700; color: var(--color-accent); white-space: nowrap;
            text-decoration: underline; text-decoration-color: var(--color-accent-2); text-decoration-thickness: 2px; text-underline-offset: 0.25em; }
+.pv-btn { position: relative; z-index: 2; display: inline-flex; align-items: center; gap: var(--space-xs); min-height: 44px; padding: 0 var(--space-sm);
+          border: var(--rule-bar) solid var(--color-ink); border-radius: var(--radius-card); background: var(--color-paper); color: var(--color-ink);
+          font-weight: 700; white-space: nowrap; cursor: pointer; }
+.pv-btn svg { width: 14px; height: 14px; flex: none; }
+.pv-btn:hover { color: var(--color-accent-2); border-color: var(--color-accent-2); }
+
+/* ── PV 播放視窗 ── */
+dialog.pv { width: calc(100% - 2 * var(--gutter)); max-width: 1120px; max-height: calc(100dvh - 2 * var(--space-lg)); padding: 0; overflow: auto;
+            border: var(--rule-bar) solid var(--color-ink); border-radius: var(--radius-card); background: var(--color-paper-2); color: var(--color-ink); box-shadow: var(--shadow-card); }
+dialog.pv::backdrop { background: color-mix(in oklab, var(--color-shade) 82%, transparent); }
+.pv-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); padding: var(--space-xs) var(--space-xs) var(--space-xs) var(--space-lg); }
+.pv-title { font-weight: 900; font-size: var(--text-lg); }
+.pv-close { min-height: 44px; padding: 0 var(--space-md); border: var(--rule-bar) solid var(--color-rule); border-radius: var(--radius-card); background: transparent; color: var(--color-ink); font-weight: 700; cursor: pointer; }
+.pv-close:hover { border-color: var(--color-ink); }
+dialog.pv video { display: block; width: 100%; height: auto; max-height: calc(100dvh - 2 * var(--space-lg) - 72px); aspect-ratio: 16 / 9; background: var(--color-shade); }
+/* 下排三格比較窄：按鈕排到說明下面 */
+.tile:nth-child(n+3) .cap { grid-template-columns: minmax(0, 1fr); }
+.tile:nth-child(n+3) .cap .acts { grid-column: 1; grid-row: auto; justify-content: space-between; margin-top: var(--space-xs); }
 .tile:nth-child(n+3) .cap p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 @media (max-width: 60rem) {
   .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; grid-auto-rows: auto; }
   .tile, .tile:nth-child(n) { grid-column: auto; grid-row: auto; }
-  .tile:nth-child(1) { grid-column: 1 / -1; }
+  .tile:nth-child(-n+2), .tile:nth-child(5) { grid-column: 1 / -1; }
   .shot { aspect-ratio: 16 / 10; }
-  .tile:nth-child(2) .shot { aspect-ratio: 4 / 3; }
 }
 @media (max-width: 40rem) { .bento { grid-template-columns: minmax(0, 1fr); } }
 
@@ -178,14 +201,26 @@ footer a { font-weight: 700; text-decoration-color: var(--color-accent-2); text-
   .others .d { grid-column: 1 / -1; grid-row: 2; }
 }
 
+/* ── 回到最上面：捲過第一屏才出現，固定在右下角 ── */
+.totop { position: fixed; right: var(--space-lg); bottom: var(--space-lg); z-index: 200; display: inline-flex; align-items: center; gap: var(--space-xs);
+         min-height: 48px; padding: 0 var(--space-md); border: var(--rule-bar) solid var(--color-ink); border-radius: var(--radius-card);
+         background: var(--color-paper-2); color: var(--color-ink); font-weight: 700; text-decoration: none; box-shadow: var(--shadow-card);
+         transition: translate var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out); }
+.totop svg { width: 18px; height: 18px; flex: none; }
+.totop:hover { translate: -2px -2px; box-shadow: 8px 8px 0 var(--color-accent-2); }
+.totop:active { translate: 3px 3px; box-shadow: 2px 2px 0 var(--color-accent-2); }
+@media (max-width: 40rem) { .totop { right: var(--space-md); bottom: var(--space-md); } }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  .totop:hover, .totop:active { translate: none; }
   .btn:hover, .tile:hover, .btn:active, .tile:active { translate: none; }
 }
 </style>
 </head>
 <body>
-<header class="nav">
+<header class="nav" id="top">
   <div class="container">
     <a class="wordmark" href="./" aria-label="Ken 的網頁首頁">KEN</a>
     <nav class="nav-links" aria-label="頁面">
@@ -325,13 +360,20 @@ footer a { font-weight: 700; text-decoration-color: var(--color-accent-2); text-
   </div>
 </footer>
 
+<dialog class="pv" aria-labelledby="pv-title">
+  <div class="pv-head"><p class="pv-title" id="pv-title"></p><button type="button" class="pv-close" data-zh="關閉" data-en="Close" data-ja="閉じる">關閉</button></div>
+  <video controls playsinline preload="none" poster="video/kmap-pv.webp" width="1920" height="1080"></video>
+</dialog>
+
+<a class="totop" href="#top" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" aria-hidden="true"><path d="M6 14l6-6 6 6"/></svg><span data-zh="回到最上面" data-en="Back to top" data-ja="トップへ">回到最上面</span></a>
+
 <script>
 /* 所有網頁的清單。url 可以是這個 repo 裡的子資料夾（例如 "snake/"），也可以是其他 repo 的 GitHub Pages 網址。
    featured：代表作的順序（1 是最大那格），要配 img（img/works/ 底下的截圖）與 short（格子裡那一行）；
    沒有 featured 的列在「其他工具與 App」。私人專區的入口在頁尾，不在這裡。 */
 const PAGES = [
   { icon: "📚", name: "K書吧", desc: "電子書閱讀器：書架、閱讀進度同步、朗讀。", url: "https://agan0617.github.io/KBookBar/", tag: "工具",
-    featured: 5, img: "img/works/kbookbar.webp", w: 1440, h: 900, short: "電子書閱讀器：書架、進度同步、朗讀。",
+    featured: 1, img: "img/works/kbookbar.webp", w: 1440, h: 900, short: "電子書閱讀器：書架、進度同步、朗讀。",
     en: { desc: "E-book reader: bookshelf, synced reading progress, text-to-speech.", tag: "Tool", short: "E-book reader with synced progress and read-aloud." },
     ja: { desc: "電子書籍リーダー：本棚、読書進捗の同期、読み上げ。", tag: "ツール", short: "本棚、進捗同期、読み上げつきの電子書籍リーダー。" } },
   { icon: "📖", name: "K書吧 App", desc: "K書吧的 Android App：背景、關螢幕也能朗讀。APK 在 Releases。", url: "https://github.com/agan0617/KBookBarApp", tag: "App",
@@ -344,19 +386,19 @@ const PAGES = [
     en: { name: "AnnoyingCats", desc: "A mini game made with Cocos Creator.", tag: "Game" },
     ja: { desc: "Cocos Creator で作ったミニゲーム。", tag: "ゲーム" } },
   { icon: "🗼", name: "魔塔：失落的旋律", desc: "經典魔塔：20 層原創關卡＋隱藏層、四隻大型 Boss、技能三選一、兩種結局，打倒 Boss 找回被偷走的音樂。手機電腦進度同步。", url: "https://agan0617.github.io/MagicTower/", tag: "遊戲",
-    featured: 1, img: "img/works/magictower.webp", w: 908, h: 900, pos: "50% 62%", short: "20 層原創關卡、四隻大型 Boss、兩種結局，打倒 Boss 找回被偷走的音樂。",
+    featured: 3, img: "img/works/magictower.webp", w: 908, h: 900, pos: "50% 62%", pv: "video/magictower-pv.mp4", pvPoster: "video/magictower-pv.webp", short: "20 層原創關卡、四隻大型 Boss、兩種結局，打倒 Boss 找回被偷走的音樂。",
     en: { name: "Magic Tower: The Lost Melody", desc: "Classic Magic Tower: 20 original floors plus a hidden one, four giant bosses, a choice of three skills and two endings — defeat the bosses to bring stolen music back. Progress syncs across devices.", tag: "Game", short: "20 original floors, four giant bosses and two endings. Win the stolen music back." },
     ja: { name: "魔塔：失われた旋律", desc: "クラシック魔塔：オリジナル 20 階＋隠しフロア、大型ボス 4 体、3 択のスキル、2 種類のエンディング。ボスを倒して盗まれた音楽を取り戻そう。端末間で進行を同期。", tag: "ゲーム", short: "オリジナル 20 階、大型ボス 4 体、エンディング 2 種。盗まれた音楽を取り戻そう。" } },
   { icon: "🗾", name: "K地圖", desc: "邊玩邊熟悉地圖：臺灣縣市、日本都道府縣、中國各省、世界 197 國。找位置、看名產猜地方、陪柴犬 Komugi 鄰接旅行，點亮每一塊、集滿印章。中英日三語，進度可雲端存檔跨裝置同步。", url: "https://agan0617.github.io/KMap/", tag: "遊戲",
-    featured: 4, img: "img/works/kmap.webp", w: 1440, h: 900, short: "臺灣、日本、中國、世界 197 國，邊玩邊記地圖。",
+    featured: 2, img: "img/works/kmap.webp", w: 1440, h: 900, pv: "video/kmap-pv.mp4", pvPoster: "video/kmap-pv.webp", short: "臺灣、日本、中國、世界 197 國，邊玩邊記地圖。",
     en: { name: "KMap", desc: "Learn the map by playing: Taiwan's counties and cities, Japan's prefectures, China's provinces and 197 countries of the world. Find places, guess them from local specialties, travel with Komugi the shiba, light up every area and collect stamps. Chinese, English and Japanese; cloud save syncs progress across devices.", tag: "Game", short: "Taiwan, Japan, China and 197 countries: learn the map by playing." },
     ja: { name: "K地図", desc: "遊びながら地図を覚える：台湾の県市、日本の都道府県、中国の各省、世界197か国。場所当て、名物から当てるクイズ、柴犬 Komugi と隣接めぐり。全エリアを制覇してスタンプを集めよう。中・英・日の 3 言語、クラウドセーブで端末間同期。", tag: "ゲーム", short: "台湾、日本、中国、世界 197 か国。遊びながら地図を覚える。" } },
   { icon: "🚀", name: "星海衝突", desc: "皇室戰爭式的直式即時對戰，加上星海爭霸的經濟：派礦工挖礦、蓋精煉廠收瓦斯、補人口、升建築解鎖兵種，再把兵丟上兩條路拆塔。單機對電腦，三種難度。", url: "https://agan0617.github.io/StarClash/", tag: "遊戲",
-    featured: 2, img: "img/works/starclash.webp", w: 780, h: 1688, pos: "50% 0%", short: "皇室戰爭的節奏，星海爭霸的經濟。",
+    featured: 4, img: "img/works/starclash.webp", w: 780, h: 1688, pos: "50% 12%", short: "皇室戰爭的節奏，星海爭霸的經濟。",
     en: { name: "Star Clash", desc: "Clash Royale-style portrait real-time battles with StarCraft economy: send workers to mine, build refineries for gas, raise supply, tech up to unlock units, then push down two lanes to take towers. Single player against the computer, three difficulty levels.", tag: "Game", short: "Clash Royale pace with a StarCraft economy." },
     ja: { name: "星海衝突", desc: "クラロワ風の縦画面リアルタイム対戦に、スタクラ式の経済をプラス。ワーカーで採掘、精製所でガス、補給で人口を増やし、建物を建てて兵種を解放、2 本のレーンでタワーを落とそう。コンピュータとの一人用、難易度 3 段階。", tag: "ゲーム", short: "クラロワのテンポに、スタクラの経済。" } },
   { icon: "🏎️", name: "KCar", desc: "3D 卡丁車競速：甩尾集氣換氮氣，放開甩尾、車身回正的瞬間按油門噴出小噴，再接雙噴。柴犬 Komugi 開車，計時賽與自由練習，手機電腦都能玩。", url: "https://agan0617.github.io/KCar/", tag: "遊戲",
-    featured: 3, img: "img/works/kcar.webp", w: 1440, h: 900, pos: "50% 60%", short: "3D 卡丁車：甩尾集氣，小噴接雙噴。",
+    featured: 5, img: "img/works/kcar.webp", w: 1440, h: 900, pos: "50% 60%", short: "3D 卡丁車：甩尾集氣，小噴接雙噴。",
     en: { desc: "3D kart racing: drift to charge nitro, then hit the throttle just as the kart straightens out of a drift for a boost — and again for a double boost. Komugi the shiba drives; time trial and free practice, on phone or PC.", tag: "Game", short: "3D karts: drift to charge, then boost and double boost." },
     ja: { desc: "3D カートレース。ドリフトでニトロをため、ドリフトを解いて車体がまっすぐになった瞬間にアクセルでミニブースト、続けてダブルブースト。柴犬 Komugi が運転、タイムアタックとフリー走行、スマホでもPCでも。", tag: "ゲーム", short: "3D カート。ドリフトでためて、ミニブーストからダブルブースト。" } },
   { icon: "🎲", name: "K桌遊", desc: "桌遊小幫手：玩法教學、主持人旁白語音與字幕（按一下就念「天黑請閉眼」），還有一支手機傳著玩的發詞、發身分。中英日三語，收錄阿瓦隆、誰是臥底、砰！、三國殺。", url: "https://agan0617.github.io/KBoardGame/", tag: "工具",
@@ -380,20 +422,22 @@ const PAGES = [
 ];
 
 /* 版號：改首頁就加版號 */
-const SITE_VERSION = "2.0.0";
+const SITE_VERSION = "2.1.0";
 document.getElementById("ver").textContent = "v" + SITE_VERSION;
 
+const PV_LABEL = { zh: "看 PV", en: "Watch PV", ja: "PV を見る" };
 const GO = { zh: { "遊戲": "開始玩", "工具": "打開" }, en: { "遊戲": "Play", "工具": "Open" }, ja: { "遊戲": "遊ぶ", "工具": "開く" } };
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 function renderPages(l) {
   const tr = p => Object.assign({}, p, l !== "zh" && p[l] ? p[l] : {});   // en／ja 裡有的欄位蓋過中文
   document.getElementById("featured").innerHTML = PAGES.filter(p => p.featured).sort((a, b) => a.featured - b.featured).map((p, i) => {
     const t = tr(p);
+    const pv = p.pv ? `<button type="button" class="pv-btn" data-pv="${esc(p.pv)}" data-poster="${esc(p.pvPoster || "")}" data-title="${esc(t.name)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>${esc(PV_LABEL[l])}</button>` : "";
     return `
-  <a class="tile" href="${esc(p.url)}">
+  <article class="tile">
     <div class="shot"><img src="${esc(p.img)}" width="${p.w}" height="${p.h}" alt="" ${i ? 'loading="lazy"' : ""} decoding="async" style="object-position:${p.pos || "50% 50%"}"></div>
-    <div class="cap"><h3>${esc(t.name)}</h3><p>${esc(t.short)}</p><span class="go">${esc(GO[l][p.tag] || GO[l]["工具"])}</span></div>
-  </a>`;
+    <div class="cap"><h3><a class="cover" href="${esc(p.url)}">${esc(t.name)}</a></h3><p>${esc(t.short)}</p><span class="acts">${pv}<span class="go" aria-hidden="true">${esc(GO[l][p.tag] || GO[l]["工具"])}</span></span></div>
+  </article>`;
   }).join("");
   document.getElementById("others-list").innerHTML = PAGES.filter(p => !p.featured).map(p => {
     const t = tr(p);
@@ -415,6 +459,26 @@ document.querySelectorAll(".lang button").forEach(b => b.onclick = () => setLang
 let saved = null;
 try { saved = localStorage.getItem("lang"); } catch (e) {}
 setLang(saved || (/^zh/i.test(navigator.language) ? "zh" : /^ja/i.test(navigator.language) ? "ja" : "en"));
+
+/* PV：點「看 PV」在視窗裡播，關掉就停；按 Esc 或點視窗外面也會關 */
+const dlg = document.querySelector("dialog.pv"), vid = dlg.querySelector("video");
+document.getElementById("featured").addEventListener("click", e => {
+  const b = e.target.closest(".pv-btn");
+  if (!b) return;
+  vid.poster = b.dataset.poster; vid.src = b.dataset.pv;
+  dlg.querySelector(".pv-title").textContent = b.dataset.title + " PV";
+  dlg.showModal();
+  vid.play().catch(() => {});
+});
+dlg.querySelector(".pv-close").addEventListener("click", () => dlg.close());
+dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+dlg.addEventListener("close", () => { vid.pause(); });
+
+/* 回到最上面：第一屏（hero）看不到時才出現 */
+const totop = document.querySelector(".totop"), hero = document.querySelector(".hero");
+if ("IntersectionObserver" in window && totop && hero) {
+  new IntersectionObserver(([e]) => { totop.hidden = e.isIntersecting; }).observe(hero);
+}
 
 /* Email：點了才組出地址並顯示，原始碼裡沒有完整的信箱字串 */
 document.querySelectorAll("a.mail").forEach(a => a.addEventListener("click", e => {

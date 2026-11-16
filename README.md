@@ -6,7 +6,8 @@
 
 1. **放在這個 repo**：建一個子資料夾（例如 `snake/`），把網頁的 `index.html` 等檔案放進去，網址就是 `https://agan0617.github.io/snake/`
 2. **在首頁加連結**：`index.html` 裡的 `PAGES` 清單加一筆 `{ name, desc, url, tag, en: { desc, tag }, ja: { desc, tag } }`；`url` 用子資料夾就寫 `"snake/"`，`en`、`ja` 是英文版、日文版要換掉的欄位（首頁有中／EN／日本語切換）。這樣會列在「其他工具與 App」
-   - **要放進上面的代表作**（有截圖的大格子，目前五個）：再加 `featured`（順序，1 是最大那格、2 是右邊直式那格）、`img`（截圖，放 `img/works/`，WebP）、`w`、`h`（截圖寬高）、`short`（格子裡那一行，`en`、`ja` 裡也各寫一個），需要時加 `pos`（截圖對齊位置，例如 `"50% 0%"`）。格子排法是照五個設計的，數量變了要改 `.bento` 的版面
+   - **要放進上面的代表作**（有截圖的大格子，目前五個）：再加 `featured`（順序，1 是最大那格、2 是右邊直式那格）、`img`（截圖，放 `img/works/`，WebP）、`w`、`h`（截圖寬高）、`short`（格子裡那一行，`en`、`ja` 裡也各寫一個），需要時加 `pos`（截圖對齊位置，例如 `"50% 0%"`）。格子排法是照五個設計的（前兩個是主打的大格），數量變了要改 `.bento` 的版面
+   - **有 PV 的**：再加 `pv`（影片，放 `video/`，H.264＋AAC 的 MP4）與 `pvPoster`（封面圖），格子會多一個「看 PV」按鈕，點了在視窗裡播。影片先用 `ffmpeg -i <原檔> -c:v libx264 -preset slow -crf 26 -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart <輸出>.mp4` 壓過（30 秒 1080p 約 5～7MB）
 3. commit、push，GitHub Pages 約一分鐘後更新
 
 已經有自己 repo 的網頁（K書吧 `KBookBar`、`AnnoyingCats`）只在首頁放連結、不搬進來：它們的網址是 `agan0617.github.io/<repo 名>/`，由各自的 repo 提供；這裡若建同名資料夾會被那個 repo 蓋過。
