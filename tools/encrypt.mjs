@@ -41,15 +41,19 @@ function page(payload) {
 <meta name="robots" content="noindex">
 <title>私人頁面</title>
 <style>
-  :root { --bg:#f3f1ec; --card:#fff; --text:#1d2126; --muted:#646a72; --line:#e2ded6; --accent:#2d5a8e; --err:#b0372b; }
+  :root { --bg:#f3f1ec; --card:#fff; --text:#1d2126; --muted:#646a72; --line:#e2ded6; --accent:#2d5a8e; --err:#b0372b;
+          --font:-apple-system,"Segoe UI","Noto Sans TC","Microsoft JhengHei",sans-serif; }
   @media (prefers-color-scheme: dark) { :root { --bg:#111417; --card:#1a1e22; --text:#e7e7e4; --muted:#9aa1a8; --line:#2a2f35; --accent:#8ab4e8; --err:#f07a6c; } }
   * { box-sizing: border-box; }
+  html, body { overflow-x:clip; }
   body { margin:0; min-height:100vh; display:grid; place-items:center; background:var(--bg); color:var(--text);
-         font-family:-apple-system,"Segoe UI","Noto Sans TC","Microsoft JhengHei",sans-serif; padding:16px; }
+         font-family:var(--font); padding:16px; }
   form { width:100%; max-width:360px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:24px; }
-  h1 { font-size:20px; margin:0 0 4px; }
+  h1 { font-size:20px; margin:0 0 4px; display:flex; align-items:center; gap:8px; text-wrap:balance; }
+  h1 svg { width:20px; height:20px; flex:none; color:var(--accent); }
+  input:focus-visible, button:focus-visible, a:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
   p { color:var(--muted); font-size:14px; margin:0 0 16px; }
-  input[type=password] { width:100%; font:inherit; font-size:18px; padding:10px 12px; border:1px solid var(--line); border-radius:10px;
+  input[type=password] { width:100%; font:inherit; font-size:18px; padding:10px 12px; border:1px solid var(--muted); border-radius:10px;
                          background:var(--bg); color:var(--text); letter-spacing:.1em; }
   label.rm { display:flex; gap:8px; align-items:center; font-size:14px; color:var(--muted); margin:12px 0; }
   button { width:100%; font:inherit; font-size:16px; padding:10px; border:0; border-radius:10px; background:var(--accent); color:var(--card); cursor:pointer; }
@@ -59,7 +63,7 @@ function page(payload) {
 </head>
 <body>
 <form id="f">
-  <h1>🔒 私人頁面</h1>
+  <h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>私人頁面</h1>
   <p>請輸入密碼。</p>
   <input type="password" id="pw" autocomplete="current-password" autocapitalize="off" spellcheck="false" autofocus aria-label="密碼">
   <label class="rm"><input type="checkbox" id="rm"> 記住這台裝置</label>
@@ -71,12 +75,20 @@ function page(payload) {
 const P = ${JSON.stringify(payload)};
 const KEY = "privpw";
 const u8 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+// 每個私人頁面共用的無障礙底線：鍵盤焦點框、系統要求減少動畫時關掉動畫。
+// 解密後才塞進頁面，密文仍是原稿原樣（decrypt.mjs 解回來一字不差）；:where() 讓頁面自己的樣式優先。
+const BASE_CSS = ":where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:2px solid currentColor;outline-offset:2px}"
+  + "@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}";
+const withBase = html => {
+  const tag = "<style>" + BASE_CSS + "</style>";
+  return /<\\/head>/i.test(html) ? html.replace(/<\\/head>/i, tag + "</head>") : tag + html;
+};
 async function open(pw) {
   const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
   const key = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: u8(P.salt), iterations: P.iter, hash: "SHA-256" },
     base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
   const html = new TextDecoder().decode(await crypto.subtle.decrypt({ name: "AES-GCM", iv: u8(P.iv) }, key, u8(P.ct)));
-  document.open(); document.write(html); document.close();
+  document.open(); document.write(withBase(html)); document.close();
 }
 const get = k => { try { return localStorage.getItem(k) || sessionStorage.getItem(k); } catch (e) { return null; } };
 const f = document.getElementById("f"), err = document.getElementById("err"), go = document.getElementById("go");
