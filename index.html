@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Chivo:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Chivo:wght@400;700;900&family=Noto+Sans+TC:wght@900&display=swap" rel="stylesheet">
 <style>
 /* Hallmark · shape: Portfolio Grid (draw a7e70c swapped Map / Diagram: the works are the page) · genre: playful · theme: Arcade (deal 1/3, seed personal-portfolio-game-developer-a579·6d065f9c·2026-11-16·r0) · redesign: full
  * hero: Banner (draw) · nav: edge-aligned (draw's search-led bar swapped: four destinations, nothing to search) · footer: letter close (draw) · imagery: the product, captured · signature: the five games and tools as a lit cabinet bento, each one a press to play · arcade: ember/grille
@@ -23,6 +23,7 @@
 /* taste-skill 2.5.1 · v2.2.0 (2026-11-16) · kind: gaming portfolio
  * ground: violet (hue 312) → warm charcoal (house rule: never violet) · hero: alone on the first screen, the works as its picture (split: words span-5, a collage of three screenshots span-7)
  * motion: hero enters once on load (h1 rises, lead and buttons fade up 12px, the collage settles from .98), screenshots zoom 1.03 inside their frame on hover, underlines draw
+ * v2.3.0: h1 split into a Bungee "KEN" with an ember hard shadow over a Noto Sans TC 900 lime line (the RGB-split shadow read blurry) · the hero collage became a five-tile bento of linked works
  * dropped: the scanline overlay on screenshots (a photograph never takes an overlay) · kept on Ken's ask: the back-to-top button */
 
 /* ── tokens（Arcade 主題＋共用尺度；中日文字型接在後面） ── */
@@ -88,24 +89,41 @@ button { font: inherit; }
 .lang button[aria-pressed="true"] { color: var(--color-accent-2); box-shadow: inset 0 -3px 0 var(--color-accent-2); }
 @media (max-width: 40rem) { .nav-links a { display: none; } }
 
-/* ── hero（第一屏只放它：左邊名字、一句話、兩個動作，右邊三張作品截圖疊成一組） ── */
+/* ── hero（第一屏只放它：左邊名字、一句話、兩個動作，右邊五款作品排成一組 bento） ── */
 .hero { min-height: calc(100svh - var(--nav-h)); display: grid; align-items: center; padding-block: var(--space-2xl); }
 .hero .container { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap-columns); align-items: center; }
-.hero-text { grid-column: 1 / span 6; }
-.collage { grid-column: 7 / -1; position: relative; aspect-ratio: 16 / 11.5; }
-.collage figure { position: absolute; margin: 0; overflow: hidden; background: var(--color-paper-3);
-                  border: var(--rule-bar) solid var(--color-ink); border-radius: var(--radius-card); }
-.collage img { width: 100%; height: 100%; object-fit: cover; }
-.collage .c1 { left: 0; top: 0; width: 84%; aspect-ratio: 16 / 10; box-shadow: var(--shadow-card); }
-.collage .c2 { left: 6%; bottom: 0; width: 40%; aspect-ratio: 1; box-shadow: 6px 6px 0 var(--color-accent); }
-.collage .c3 { right: 0; bottom: 4%; width: 26%; aspect-ratio: 9 / 16; box-shadow: 6px 6px 0 var(--color-accent-2); }
+.hero-text { grid-column: 1 / span 5; }
+/* 五格同一套框：同寬的縫、同樣的邊與圓角；左上 K地圖最大，右側星海衝突直式貫穿三列 */
+.collage { grid-column: 6 / -1; display: grid; gap: 14px; aspect-ratio: 1 / 0.8;
+           grid-template-columns: 1.2fr 1fr 0.78fr; grid-template-rows: 1.3fr 1fr 1fr;
+           grid-template-areas: "kmap kmap star" "book tower star" "car car star"; }
+.collage a { position: relative; display: block; min-height: 0; overflow: hidden; background: var(--color-paper-3);
+             border: var(--rule-bar) solid var(--color-rule); border-radius: 6px; color: var(--color-ink); text-decoration: none;
+             transition: translate 180ms var(--ease-out), border-color 180ms var(--ease-out); }
+.collage img { width: 100%; height: 100%; object-fit: cover; transition: scale 400ms var(--ease-out); }
+.collage .tag { position: absolute; left: 10px; bottom: 10px; padding: 3px 10px; border-radius: 999px; background: color-mix(in oklab, var(--color-shade) 82%, transparent);
+                font-size: var(--text-xs); font-weight: 700; line-height: 1.5; white-space: nowrap; }
+.collage .g-kmap { grid-area: kmap; } .collage .g-star { grid-area: star; } .collage .g-book { grid-area: book; }
+.collage .g-tower { grid-area: tower; } .collage .g-car { grid-area: car; }
+@media (hover: hover) and (pointer: fine) {
+  .collage a:hover { translate: 0 -2px; border-color: var(--color-ink); }
+  .collage a:hover img { scale: 1.03; transition-duration: 600ms; }
+}
 @media (max-width: 60rem) {
   .hero { padding-block: var(--space-xl); }
   .hero-text, .collage { grid-column: 1 / -1; }
-  .collage { max-width: 640px; }
+  .collage { width: 100%; aspect-ratio: 1 / 0.68; }
 }
-.hero h1 { font-family: var(--font-display); font-weight: 400; font-size: var(--text-display); line-height: 1.02; text-transform: uppercase; max-width: 16ch;
-           text-shadow: -1.5px 0 0 var(--color-crt-r), 1.5px 0 0 var(--color-crt-c); }
+@media (max-width: 40rem) {
+  .collage { gap: 10px; aspect-ratio: auto; grid-template-columns: 1.15fr 0.85fr; grid-template-rows: 150px 104px 104px 120px;
+             grid-template-areas: "kmap kmap" "book star" "tower star" "car car"; }
+}
+/* 大標：KEN 用 Bungee 大字、壓一層 ember 硬陰影；後半句另起一行，用思源黑體 900、lime 色 */
+.hero h1 { font-weight: 400; line-height: 1; text-transform: uppercase; }
+.hero h1 .t-big { display: block; font-family: var(--font-display); font-size: clamp(4.5rem, 2.5rem + 7vw, 9rem); line-height: 0.86; letter-spacing: 0.02em;
+                  color: var(--color-ink); text-shadow: 0.05em 0.05em 0 var(--color-accent); }
+.hero h1 .t-rest { display: block; margin-top: 0.32em; font-family: "Noto Sans TC", var(--font-body); font-weight: 900; font-size: clamp(2.25rem, 1.4rem + 3vw, 4rem);
+                   line-height: 1.1; letter-spacing: 0.08em; color: var(--color-accent-2); }
 .hero .lead { margin-top: var(--space-lg); font-size: var(--text-lead); line-height: 1.5; max-width: 40ch; color: var(--color-ink-2); text-wrap: balance; }
 .actions { margin-top: var(--space-xl); display: flex; flex-wrap: wrap; gap: var(--space-md); }
 .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-lg); border: var(--rule-bar) solid var(--color-ink); border-radius: var(--radius-card);
@@ -270,17 +288,19 @@ footer a { display: inline-block; padding-block: 12px; font-weight: 700; backgro
   <section class="hero">
     <div class="container">
       <div class="hero-text">
-      <h1 data-zh="Ken的開發小屋" data-en="Ken's Dev Cabin" data-ja="Kenの開発小屋">Ken的開發小屋</h1>
+      <h1 id="title" data-t-zh="Ken的開發小屋" data-t-en="Ken's Dev Cabin" data-t-ja="Kenの開発小屋"><span class="t-big">Ken</span><span class="t-rest">的開發小屋</span></h1>
       <p class="lead" data-zh="資深遊戲開發者，現在用 AI 自己做遊戲和小工具。挑一款，瀏覽器打開就能玩。" data-en="Veteran game developer, now building my own games and tools with AI. Pick one and play it in your browser." data-ja="ベテランのゲーム開発者。いまは AI で自分のゲームとツールを作っています。ブラウザですぐ遊べます。">資深遊戲開發者，現在用 AI 自己做遊戲和小工具。挑一款，瀏覽器打開就能玩。</p>
       <div class="actions">
         <a class="btn" href="#works" data-zh="挑一款來玩" data-en="Pick a game" data-ja="遊んでみる">挑一款來玩</a>
         <a class="btn btn--secondary" href="#about" data-zh="我的經歷" data-en="My career" data-ja="経歴">我的經歷</a>
       </div>
       </div>
-      <div class="collage" aria-hidden="true">
-        <figure class="c1"><img src="img/works/kmap.webp" width="1440" height="900" alt="" fetchpriority="high"></figure>
-        <figure class="c2"><img src="img/works/magictower.webp" width="908" height="900" alt="" style="object-position:50% 62%"></figure>
-        <figure class="c3"><img src="img/works/starclash.webp" width="780" height="1688" alt="" style="object-position:50% 12%"></figure>
+      <div class="collage">
+        <a class="g-kmap" href="https://agan0617.github.io/KMap/"><img src="img/works/kmap.webp" width="1440" height="900" alt="" fetchpriority="high" style="object-position:50% 0%"><span class="tag" data-zh="K地圖" data-en="KMap" data-ja="K地図">K地圖</span></a>
+        <a class="g-star" href="https://agan0617.github.io/StarClash/"><img src="img/works/starclash.webp" width="780" height="1688" alt="" style="object-position:50% 12%"><span class="tag" data-zh="星海衝突" data-en="Star Clash" data-ja="星海衝突">星海衝突</span></a>
+        <a class="g-book" href="https://agan0617.github.io/KBookBar/"><img src="img/works/kbookbar.webp" width="1440" height="900" alt="" style="object-position:50% 30%"><span class="tag" data-zh="K書吧" data-en="KBookBar" data-ja="K書吧">K書吧</span></a>
+        <a class="g-tower" href="https://agan0617.github.io/MagicTower/"><img src="img/works/magictower.webp" width="908" height="900" alt="" style="object-position:60% 62%"><span class="tag" data-zh="魔塔" data-en="Magic Tower" data-ja="魔塔">魔塔</span></a>
+        <a class="g-car" href="https://agan0617.github.io/KCar/"><img src="img/works/kcar.webp" width="1440" height="900" alt="" style="object-position:50% 62%"><span class="tag">KCar</span></a>
       </div>
     </div>
   </section>
@@ -462,7 +482,7 @@ const PAGES = [
 ];
 
 /* 版號：改首頁就加版號 */
-const SITE_VERSION = "2.2.1";
+const SITE_VERSION = "2.3.0";
 document.getElementById("ver").textContent = "v" + SITE_VERSION;
 
 const PV_LABEL = { zh: "介紹影片", en: "Intro video", ja: "紹介動画" };
@@ -490,6 +510,9 @@ function renderPages(l) {
 function setLang(l) {
   document.querySelectorAll("[data-lang]").forEach(s => { s.hidden = s.dataset.lang !== l; });
   document.querySelectorAll("[data-zh]").forEach(el => { el.textContent = el.dataset[l]; });
+  /* 大標拆兩段：開頭的英文名（Ken／Ken's）放大，其餘另起一行 */
+  const title = document.getElementById("title"), ts = title.dataset["t" + l[0].toUpperCase() + l.slice(1)], tm = ts.match(/^([A-Za-z']+)\s*(.*)$/);
+  title.innerHTML = tm ? `<span class="t-big">${esc(tm[1])}</span><span class="t-rest">${esc(tm[2])}</span>` : esc(ts);
   document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.l === l)));
   document.documentElement.lang = l === "zh" ? "zh-Hant" : l;
   renderPages(l);
