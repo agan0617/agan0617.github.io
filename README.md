@@ -5,7 +5,8 @@
 ## 新增一個網頁
 
 1. **放在這個 repo**：建一個子資料夾（例如 `snake/`），把網頁的 `index.html` 等檔案放進去，網址就是 `https://agan0617.github.io/snake/`
-2. **在首頁加連結**：`index.html` 裡的 `PAGES` 清單加一筆 `{ icon, name, desc, url, tag, en: { desc, tag } }`；`url` 用子資料夾就寫 `"snake/"`，`en` 是英文版要換掉的欄位（首頁有中／EN 切換）
+2. **在首頁加連結**：`index.html` 裡的 `PAGES` 清單加一筆 `{ name, desc, url, tag, en: { desc, tag }, ja: { desc, tag } }`；`url` 用子資料夾就寫 `"snake/"`，`en`、`ja` 是英文版、日文版要換掉的欄位（首頁有中／EN／日本語切換）。這樣會列在「其他工具與 App」
+   - **要放進上面的代表作**（有截圖的大格子，目前五個）：再加 `featured`（順序，1 是最大那格、2 是右邊直式那格）、`img`（截圖，放 `img/works/`，WebP）、`w`、`h`（截圖寬高）、`short`（格子裡那一行，`en`、`ja` 裡也各寫一個），需要時加 `pos`（截圖對齊位置，例如 `"50% 0%"`）。格子排法是照五個設計的，數量變了要改 `.bento` 的版面
 3. commit、push，GitHub Pages 約一分鐘後更新
 
 已經有自己 repo 的網頁（K書吧 `KBookBar`、`AnnoyingCats`）只在首頁放連結、不搬進來：它們的網址是 `agan0617.github.io/<repo 名>/`，由各自的 repo 提供；這裡若建同名資料夾會被那個 repo 蓋過。
@@ -17,7 +18,7 @@ GitHub Pages 只能放公開檔案，所以私人頁面是**加密後才上傳**
 1. 明文原稿放 `_private/`（已在 `.gitignore`，**不會進 repo**，只存在本機）
 2. 在 `private-pages.json` 加一筆 `{ "src": "_private/x.html", "out": "x/index.html" }`（不寫標題：這個檔是公開的）
 3. 執行 `SITE_PASSWORD_FILE=<密碼檔> node tools/encrypt.mjs`，產生加密後的 `x/index.html`（只有密文與輸入密碼的畫面，畫面一律只寫「私人頁面」，各頁真正的標題在密文裡）
-4. 首頁 `PAGES` 那筆加 `private: true`（卡片會顯示 🔒）
+4. 在私人專區入口（`_private/private.html` 的 `ZONES`）加一筆；首頁只有頁尾一個「私人專區」連結，不放私人頁面的卡片
 5. commit、push
 
 打開時在瀏覽器輸入密碼，用 WebCrypto（PBKDF2-SHA256 60 萬次＋AES-GCM）在本機解密；勾「記住這台裝置」會把密碼存在該瀏覽器。改了原稿要重新執行第 3 步。解密後顯示前，密碼畫面會替每一頁補上鍵盤焦點框與「減少動畫」設定（`encrypt.mjs` 的 `BASE_CSS`），原稿不用各自寫，密文也仍是原稿原樣。

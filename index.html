@@ -4,168 +4,336 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ken 的網頁</title>
-<meta name="description" content="Ken 的靜態網頁總覽">
+<meta name="description" content="Ken 做的網頁遊戲、小工具與 Android App，打開就能玩；也有他 19 年遊戲開發的經歷。">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Chivo:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #f4f2ee; --card: #ffffff; --text: #1f2328; --muted: #6b6f76;
-    --line: #e3e0da; --accent: #2d5a8e; --tag: #eef2f7;
-    --brand: #0a66c2; --on-brand: #ffffff;
-    --font: -apple-system, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg: #121417; --card: #1b1e22; --text: #e8e8e6; --muted: #9aa0a6;
-            --line: #2a2e33; --accent: #8ab4e8; --tag: #232830; }
-  }
-  * { box-sizing: border-box; }
-  html, body { overflow-x: clip; }
-  body { margin: 0; background: var(--bg); color: var(--text);
-         font-family: var(--font); line-height: 1.6; }
-  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  h1, h2 { text-wrap: balance; }
-  main { max-width: 760px; margin: 0 auto; padding: 40px 16px 64px; }
-  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: .02em; }
-  .sub { color: var(--muted); margin: 0 0 20px; font-size: 15px; }
-  .about { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; margin: 16px 0 32px; }
-  .about .who { margin: 0 0 6px; font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .about .avatar { float: left; width: 88px; height: 88px; border-radius: 50%; object-fit: cover;
-                   margin: 0 16px 8px 0; border: 3px solid var(--line); }
-  .about .who { min-height: 88px; margin-bottom: 12px; align-content: center; }
-  .about .avatar + .who + .lead { clear: both; }
-  .about .who .mail { background: var(--accent); }
-  .about .who .li { font-size: 13px; font-weight: 600; color: var(--on-brand); background: var(--brand); border-radius: 6px; padding: 3px 10px; text-decoration: none; }
-  .about .lead { margin: 0; font-size: 16px; }
-  .about h3 { font-size: 13px; letter-spacing: .08em; color: var(--muted); margin: 18px 0 6px; text-transform: uppercase; }
-  .about dl { margin: 0; }
-  .about dt { font-weight: 700; font-size: 15px; margin-top: 10px; }
-  .about dd { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
-  .about .jobs { list-style: none; margin: 0; padding: 0 0 0 14px; border-left: 2px solid var(--line); }
-  .about .jobs li { position: relative; padding: 4px 0 8px; }
-  .about .jobs li::before { content: ""; position: absolute; left: -20px; top: 11px; width: 10px; height: 10px;
-                            border-radius: 50%; background: var(--card); border: 2px solid var(--accent); }
-  .about .jobs li:first-child::before { background: var(--accent); }
-  .about .jobs b { display: block; font-size: 15px; }
-  .about .jobs span { color: var(--muted); font-size: 14px; }
-  .head { display: flex; align-items: center; gap: 12px; }
-  .ver { font-size: 12px; color: var(--muted); background: var(--tag); border-radius: 6px; padding: 1px 8px; align-self: center; }
-  .lang { margin-left: auto; display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
-  .lang button { border: 0; background: transparent; color: var(--muted); font: inherit; font-size: 13px; padding: 4px 12px; cursor: pointer; min-height: 32px; }
-  .lang button[aria-pressed="true"] { background: var(--accent); color: var(--card); }
-  h2 { font-size: 18px; margin: 24px 0 2px; }
-  h2.about-h { margin-top: 40px; }
-  h2.about-h + .about { margin-top: 10px; }
-  .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
-  a.card { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 14px;
-           padding: 16px 18px; color: inherit; text-decoration: none; transition: border-color .15s, transform .15s; }
-  a.card:hover { border-color: var(--accent); transform: translateY(-1px); }
-  /* 張數是單數時，最後一張橫跨整列，不讓它落單 */
-  a.card:last-child:nth-child(odd) { grid-column: 1 / -1; }
-  @media (prefers-reduced-motion: reduce) {
-    a.card { transition: none; }
-    a.card:hover { transform: none; }
-  }
-  .top { display: flex; align-items: center; gap: 10px; }
-  .icon { font-size: 26px; line-height: 1; }
-  .name { font-weight: 700; font-size: 17px; }
-  .desc { color: var(--muted); font-size: 14px; margin: 6px 0 10px; }
-  .url { font-size: 12px; color: var(--accent); word-break: break-all; }
-  .tag { display: inline-block; font-size: 11px; background: var(--tag); color: var(--muted);
-         border-radius: 6px; padding: 1px 7px; margin-left: auto; }
-  .lock { font-size: 14px; }
-  footer { margin-top: 36px; color: var(--muted); font-size: 12px; }
+/* Hallmark · shape: Portfolio Grid (draw a7e70c swapped Map / Diagram: the works are the page) · genre: playful · theme: Arcade (deal 1/3, seed personal-portfolio-game-developer-a579·6d065f9c·2026-11-16·r0) · redesign: full
+ * hero: Banner (draw) · nav: edge-aligned (draw's search-led bar swapped: four destinations, nothing to search) · footer: letter close (draw) · imagery: the product, captured · signature: the five games and tools as a lit cabinet bento, each one a press to play · arcade: ember/grille
+ * axes: dark/pixel/chromatic-ember · posture: full-palette · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E3 S4 R3 V4 · weakest: E, the hero has no picture, so the works start above the fold and carry it */
+/* Hallmark · waive 26b · not a form control, no aria-disabled anywhere · the only buttons on this page are the three language switches, and none is ever disabled */
+/* Hallmark · reworded "Ken" to "Kanyao Chang" · the name moved into the h1, Ken stays as the wordmark */
+/* Hallmark · reworded "我做的網頁" to "打開就能玩的五個" · the one list became the five featured works and the other tools */
+/* Hallmark · dropped grid · the single card grid became #featured and #others-list, both filled by the same renderPages */
+
+/* ── tokens（Arcade 主題＋共用尺度；中日文字型接在後面） ── */
+:root {
+  color-scheme: dark;
+  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
+  --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.25rem; --text-xl: 1.5625rem;
+  --text-display-s: clamp(2.25rem, 4vw + 0.5rem, 3.75rem); --text-display: clamp(2.75rem, 5vw + 1rem, 5.25rem);
+  --text-section: clamp(2rem, 2.5vw + 1rem, 3.25rem); --text-title: clamp(1.25rem, 0.75vw + 0.875rem, 1.625rem); --text-lead: clamp(1.125rem, 0.35vw + 1rem, 1.375rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-micro: 120ms; --dur-short: 220ms;
+  --container: 1440px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 120px; --section-gap: 144px;
+  --color-paper: oklch(14% 0.04 312); --color-paper-2: oklch(18.5% 0.042 312); --color-paper-3: oklch(23% 0.045 312);
+  --color-ink: oklch(95% 0.014 315); --color-ink-2: oklch(87% 0.018 315); --color-muted: oklch(71% 0.024 315);
+  --color-rule: oklch(34% 0.05 312);
+  --color-accent: oklch(66% 0.215 40); --color-accent-2: oklch(88% 0.195 115); --color-accent-ink: oklch(14% 0.04 312);
+  --color-focus: oklch(88% 0.195 115);
+  --color-crt-r: oklch(63% 0.24 25); --color-crt-g: oklch(80% 0.25 140); --color-crt-b: oklch(60% 0.24 265); --color-crt-c: oklch(78% 0.14 200); --color-shade: oklch(8% 0.02 315);
+  --font-display: "Bungee", "Impact", "Microsoft JhengHei", "PingFang TC", "Hiragino Sans", sans-serif;
+  --font-body: "Chivo", "Microsoft JhengHei", "PingFang TC", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --radius-card: 4px; --rule-hair: 1px; --rule-bar: 2px;
+  --shadow-card: 6px 6px 0 var(--color-accent-2);
+}
+
+/* ── base ── */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+html { scrollbar-color: var(--color-muted) var(--color-paper); scroll-padding-top: var(--space-xl); }
+body { margin: 0; background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-md); line-height: 1.6; -webkit-font-smoothing: antialiased; caret-color: var(--color-accent); }
+::selection { background: color-mix(in oklab, var(--color-accent) 30%, transparent); color: var(--color-ink); }
+:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+a { color: inherit; text-underline-offset: 0.2em; }
+h1, h2, h3 { margin: 0; font-synthesis: none; overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+:lang(ja) :is(h2, h3, .lead) { word-break: auto-phrase; }
+h2, h3 { font-family: var(--font-body); font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+h2 { font-size: var(--text-section); max-width: 30ch; }
+h3 { font-size: var(--text-title); max-width: 40ch; }
+p { margin: 0; text-wrap: pretty; }
+img { max-width: 100%; height: auto; display: block; }
+button { font: inherit; }
+[hidden] { display: none !important; }
+.container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+@media (max-width: 60rem) { :root { --gutter: 24px; --section-gap-s: 80px; --section-gap: 96px; } }
+@media (max-width: 40rem) { :root { --gutter: 16px; --section-gap-s: 56px; --section-gap: 72px; --gap-columns: 16px; } }
+
+/* ── nav ── */
+.nav { border-bottom: var(--rule-hair) solid var(--color-rule); }
+.nav .container { min-height: 72px; display: flex; align-items: center; gap: var(--space-lg); }
+.wordmark { font-family: var(--font-display); font-size: 1.75rem; line-height: 1; text-decoration: none; }
+.nav-links { margin-left: auto; display: flex; align-items: center; gap: var(--space-lg); }
+.nav-links a { font-weight: 700; text-decoration: underline; text-decoration-color: var(--color-accent-2); text-decoration-thickness: 2px; }
+.nav-links a:hover { color: var(--color-accent-2); }
+.lang { display: flex; border: var(--rule-bar) solid var(--color-rule); border-radius: var(--radius-card); }
+.lang button { min-height: 44px; min-width: 52px; padding: 0 var(--space-sm); border: 0; background: transparent; color: var(--color-ink-2); font-weight: 700; cursor: pointer; white-space: nowrap; }
+@media (max-width: 22rem) { .lang button { min-width: 44px; padding: 0 var(--space-xs); } .wordmark { font-size: 1.5rem; } }
+.lang button + button { border-left: var(--rule-hair) solid var(--color-rule); }
+.lang button:hover { color: var(--color-ink); background: var(--color-paper-2); }
+.lang button[aria-pressed="true"] { color: var(--color-accent-2); box-shadow: inset 0 -3px 0 var(--color-accent-2); }
+@media (max-width: 40rem) { .nav-links a { display: none; } }
+
+/* ── hero（Banner：名字、一句話、兩個動作；作品從第一屏下緣就開始） ── */
+.hero { padding-block: var(--space-3xl) var(--section-gap-s); }
+.hero h1 { font-family: var(--font-display); font-weight: 400; font-size: var(--text-display); line-height: 1.02; text-transform: uppercase; max-width: 16ch;
+           text-shadow: -1.5px 0 0 var(--color-crt-r), 1.5px 0 0 var(--color-crt-c); }
+.hero .lead { margin-top: var(--space-lg); font-size: var(--text-lead); line-height: 1.5; max-width: 40ch; color: var(--color-ink-2); text-wrap: balance; }
+.actions { margin-top: var(--space-xl); display: flex; flex-wrap: wrap; gap: var(--space-md); }
+.btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-lg); border: var(--rule-bar) solid var(--color-ink); border-radius: var(--radius-card);
+       background: var(--color-accent); color: var(--color-accent-ink); font-weight: 700; text-decoration: none; box-shadow: var(--shadow-card);
+       transition: translate var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out); }
+.btn:hover { translate: -2px -2px; box-shadow: 8px 8px 0 var(--color-accent-2); }
+.btn:active { translate: 3px 3px; box-shadow: 2px 2px 0 var(--color-accent-2); }
+.btn--secondary { background: transparent; color: var(--color-ink); }
+
+/* ── 代表作（bento：魔塔領頭、星海衝突直式、下排三格） ── */
+.works { padding-bottom: var(--section-gap); }
+.works h2 { margin-bottom: var(--space-xl); }
+.bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: 300px 300px 360px; gap: var(--gap-columns); }
+.tile { position: relative; display: grid; grid-template-rows: minmax(0, 1fr) auto; background: var(--color-paper-2); border: var(--rule-bar) solid var(--color-rule);
+        border-radius: var(--radius-card); color: inherit; text-decoration: none; overflow: hidden;
+        transition: translate var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out); }
+.tile:hover { translate: -2px -2px; box-shadow: var(--shadow-card); border-color: var(--color-ink); }
+.tile:active { translate: 2px 2px; box-shadow: 2px 2px 0 var(--color-accent-2); }
+.tile:nth-child(1) { grid-column: 1 / span 8; grid-row: span 2; }
+.tile:nth-child(2) { grid-column: 9 / span 4; grid-row: span 2; }
+.tile:nth-child(n+3) { grid-column: span 4; }
+.shot { position: relative; isolation: isolate; min-height: 0; background: var(--color-paper-3); }
+.shot img { width: 100%; height: 100%; object-fit: cover; }
+.shot::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    repeating-linear-gradient(to right, color-mix(in oklab, var(--color-crt-r) 5%, transparent) 0 1px, color-mix(in oklab, var(--color-crt-g) 5%, transparent) 1px 2px, color-mix(in oklab, var(--color-crt-b) 5%, transparent) 2px 3px),
+    repeating-linear-gradient(to bottom, transparent 0 2px, color-mix(in oklab, var(--color-shade) 16%, transparent) 2px 3px); }
+.cap { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: var(--space-xs) var(--space-md); padding: var(--space-md) var(--space-lg); border-top: var(--rule-bar) solid var(--color-rule); }
+.cap h3 { grid-column: 1; }
+.cap p { grid-column: 1; color: var(--color-muted); font-size: var(--text-md); line-height: 1.5; }
+.cap .go { grid-column: 2; grid-row: 1 / span 2; align-self: center; font-weight: 700; color: var(--color-accent); white-space: nowrap;
+           text-decoration: underline; text-decoration-color: var(--color-accent-2); text-decoration-thickness: 2px; text-underline-offset: 0.25em; }
+.tile:nth-child(n+3) .cap p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+@media (max-width: 60rem) {
+  .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; grid-auto-rows: auto; }
+  .tile, .tile:nth-child(n) { grid-column: auto; grid-row: auto; }
+  .tile:nth-child(1) { grid-column: 1 / -1; }
+  .shot { aspect-ratio: 16 / 10; }
+  .tile:nth-child(2) .shot { aspect-ratio: 4 / 3; }
+}
+@media (max-width: 40rem) { .bento { grid-template-columns: minmax(0, 1fr); } }
+
+/* ── 其他作品（Index：一列一個，游標所在那列亮成 ember，像選單的游標列） ── */
+.others { padding-bottom: var(--section-gap); }
+.others .head { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--gap-columns); align-items: end; margin-bottom: var(--space-xl); }
+.others .head p { color: var(--color-muted); font-size: var(--text-lead); max-width: 40ch; }
+.others ul { list-style: none; margin: 0; padding: 0; border-top: var(--rule-bar) solid var(--color-rule); }
+.others li a { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr) minmax(0, 1fr); gap: var(--gap-columns); align-items: baseline;
+               padding: var(--space-md) var(--space-sm); border-bottom: var(--rule-hair) solid var(--color-rule); text-decoration: none; }
+.others li a:hover { background: var(--color-accent); color: var(--color-accent-ink); transition: background-color var(--dur-micro) steps(1); }
+.others .n { font-weight: 900; font-size: var(--text-lg); line-height: 1.3; }
+.others .d { color: var(--color-ink-2); }
+.others .t { justify-self: end; font-size: var(--text-sm); font-weight: 700; color: var(--color-muted); }
+.others li a:hover .d, .others li a:hover .t { color: var(--color-accent-ink); }
+
+/* ── 關於我（Split：左邊人與一句話，右邊專長；經歷在下面成列） ── */
+.about { padding-bottom: var(--section-gap); }
+.about h2 { margin-bottom: var(--space-2xl); }
+.about .split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-2xl) var(--gap-columns); }
+.about .avatar { width: 160px; height: 160px; border-radius: var(--radius-card); border: var(--rule-bar) solid var(--color-rule); box-shadow: var(--shadow-card); }
+.about .who { margin-top: var(--space-xl); font-weight: 900; font-size: var(--text-xl); line-height: 1.2; }
+.about .who + .links { margin-top: var(--space-sm); }
+.about .links { margin-top: var(--space-md); display: flex; flex-wrap: wrap; gap: var(--space-lg); }
+.about .li { font-weight: 700; text-decoration: underline; text-decoration-color: var(--color-accent-2); text-decoration-thickness: 2px; }
+.about .li:hover { color: var(--color-accent-2); }
+.about .lead { margin-top: var(--space-xl); font-size: var(--text-lead); line-height: 1.55; color: var(--color-ink-2); }
+.about dl { margin: 0; }
+.about dt { font-weight: 900; font-size: var(--text-title); line-height: 1.25; }
+.about dt:not(:first-child) { margin-top: var(--space-xl); }
+.about dd { margin: var(--space-sm) 0 0; color: var(--color-ink-2); max-width: 62ch; }
+.about h3 { margin-top: var(--space-3xl); font-size: var(--text-title); }
+.about h3.sub { margin: 0 0 var(--space-lg); font-size: var(--text-md); color: var(--color-muted); }
+.about .jobs { list-style: none; margin: var(--space-lg) 0 0; padding: 0; border-top: var(--rule-bar) solid var(--color-rule); }
+.about .jobs li { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--gap-columns); padding: var(--space-md) var(--space-sm); border-bottom: var(--rule-hair) solid var(--color-rule); }
+.about .jobs li:first-child { color: var(--color-accent-2); }
+.about .jobs b { font-weight: 900; }
+.about .jobs span { color: var(--color-ink-2); }
+
+/* ── 頁尾（letter close：署名、版號、私人專區） ── */
+footer { padding-block: var(--space-2xl) var(--space-3xl); border-top: var(--rule-bar) solid var(--color-rule); }
+footer .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-lg); align-items: baseline; }
+footer .sign { font-family: var(--font-display); font-size: var(--text-xl); line-height: 1; }
+footer .meta { color: var(--color-muted); font-size: var(--text-sm); }
+footer a { font-weight: 700; text-decoration-color: var(--color-accent-2); text-decoration-thickness: 2px; }
+
+@media (max-width: 60rem) {
+  .others .head, .about .split, .about .jobs li { grid-template-columns: minmax(0, 1fr); }
+  .others .head { gap: var(--space-sm); }
+  .about .jobs li { gap: var(--space-2xs); }
+}
+@media (max-width: 40rem) {
+  .others li a { grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-2xs) var(--space-md); }
+  .others .d { grid-column: 1 / -1; grid-row: 2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  .btn:hover, .tile:hover, .btn:active, .tile:active { translate: none; }
+}
 </style>
 </head>
 <body>
-<main>
-  <div class="head">
-    <h1>Ken</h1><span class="ver" id="ver"></span>
+<header class="nav">
+  <div class="container">
+    <a class="wordmark" href="./" aria-label="Ken 的網頁首頁">KEN</a>
+    <nav class="nav-links" aria-label="頁面">
+      <a href="#works" data-zh="作品" data-en="Work" data-ja="作品">作品</a>
+      <a href="#about" data-zh="關於我" data-en="About" data-ja="自己紹介">關於我</a>
+    </nav>
     <div class="lang" role="group" aria-label="語言 / Language / 言語">
-      <button data-l="zh" aria-pressed="true">中文</button><button data-l="en" aria-pressed="false">EN</button><button data-l="ja" aria-pressed="false">日本語</button>
+      <button type="button" data-l="zh" aria-pressed="true">中文</button><button type="button" data-l="en" aria-pressed="false">EN</button><button type="button" data-l="ja" aria-pressed="false">日本語</button>
     </div>
   </div>
+</header>
 
-  <h2 data-zh="我做的網頁" data-en="My Pages" data-ja="作ったウェブページ">我做的網頁</h2>
-  <p class="sub" data-zh="自己做的小工具與小遊戲。" data-en="Small tools and mini games I built." data-ja="自作のツールとミニゲーム。">自己做的小工具與小遊戲。</p>
-  <div class="grid" id="grid"></div>
-
-  <h2 class="about-h" data-zh="關於我" data-en="About Me" data-ja="自己紹介">關於我</h2>
-  <section class="about" lang="zh-Hant" data-lang="zh">
-    <img class="avatar" src="avatar.jpg" width="88" height="88" alt="Ken 的頭像">
-    <p class="who">Ken (Kanyao Chang) <a class="li" href="https://github.com/agan0617" target="_blank" rel="noopener">GitHub ↗</a><a class="li" href="https://www.linkedin.com/in/kan-yao-chang-822b7965/" target="_blank" rel="noopener">LinkedIn ↗</a><a class="li mail" href="#" data-u="agan0617" data-d="gmail.com">✉ Email</a></p>
-    <p class="lead">遊戲開發經理暨技術專家，1982 年生，擁有 19 年以上手機、街機與跨平台遊戲的開發經驗。擅長系統層級的效能優化與團隊領導，並善用 Claude、Codex 等 AI 工具開發遊戲與應用程式。</p>
-    <h3>核心專長</h3>
-    <dl>
-      <dt>遊戲開發與引擎工具</dt>
-      <dd>精通 Unity／Cocos 與 C／C++／C#。開發過多款遊戲的核心系統（包含繪圖、AI、網路、物理等模組）、遊戲伺服器與遊戲編輯器。作品橫跨 Windows／Linux 街機平台與 Android／iOS 手機平台，類型涵蓋 RPG、SLG、ACT、賽車競速與超休閒混合遊戲等。</dd>
-      <dt>系統效能與優化</dt>
-      <dd>前聯發科工程師，專精 Android SoC 運行遊戲的效能調校、溫控與功耗管理，熟用 Streamline、Systrace、MGD、Xcode Instruments 進行深度 trace 分析。</dd>
-      <dt>領導與專案管理</dt>
-      <dd>在規模達 100 人的大型遊戲專案中帶領約 15 人的技術團隊。以 Scrum 框架推動迭代開發，主導 Sprint 規劃、需求拆解與技術風險管控；建立 GitHub Flow 分支策略、Pull Request 程式審查機制與 GitHub Actions CI/CD 自動化管線，確保版本品質與穩定的交付節奏。</dd>
-    </dl>
-    <h3>工作經歷</h3>
-    <ul class="jobs">
-      <li><b>鈊象電子股份有限公司（IGS）</b><span>程式副理兼休閒手遊製作人　·　2 年（現職）</span></li>
-      <li><b>聯發科技股份有限公司（MediaTek）</b><span>技術副理　·　5 年</span></li>
-      <li><b>福州天盟數碼有限公司（IGG）</b><span>程式經理　·　5 年</span></li>
-      <li><b>鈊象電子股份有限公司（IGS）</b><span>程式資深主任　·　7 年</span></li>
-    </ul>
+<main>
+  <section class="hero">
+    <div class="container">
+      <h1>Kanyao Chang</h1>
+      <p class="lead" data-zh="做了 19 年遊戲，現在用 AI 自己做遊戲和小工具。挑一款，瀏覽器打開就能玩。" data-en="19 years making games. Now I build my own games and tools with AI. Pick one and play it in your browser." data-ja="ゲーム開発 19 年。いまは AI で自分のゲームとツールを作っています。ブラウザですぐ遊べます。">做了 19 年遊戲，現在用 AI 自己做遊戲和小工具。挑一款，瀏覽器打開就能玩。</p>
+      <div class="actions">
+        <a class="btn" href="#works" data-zh="挑一款來玩" data-en="Pick a game" data-ja="遊んでみる">挑一款來玩</a>
+        <a class="btn btn--secondary" href="#about" data-zh="我的經歷" data-en="My career" data-ja="経歴">我的經歷</a>
+      </div>
+    </div>
   </section>
 
-  <section class="about" lang="en" data-lang="en" hidden>
-    <img class="avatar" src="avatar.jpg" width="88" height="88" alt="Portrait of Ken">
-    <p class="who">Ken (Kanyao Chang) <a class="li" href="https://github.com/agan0617" target="_blank" rel="noopener">GitHub ↗</a><a class="li" href="https://www.linkedin.com/in/kan-yao-chang-822b7965/" target="_blank" rel="noopener">LinkedIn ↗</a><a class="li mail" href="#" data-u="agan0617" data-d="gmail.com">✉ Email</a></p>
-    <p class="lead">Game Development Manager &amp; Technical Specialist, born in 1982, with 19+ years of industry experience across mobile, arcade, and cross-platform games. Skilled in system-level performance optimization and team leadership, and leveraging AI tools (Claude, Codex) to build games and applications.</p>
-    <h3>Core Expertise</h3>
-    <dl>
-      <dt>Game Development &amp; Engine Tools</dt>
-      <dd>Proficient in Unity/Cocos &amp; C/C++/C#. Experienced in building core systems for multiple games (including graphics, AI, networking, and physics modules), game servers, and game editors. Shipped titles span Windows/Linux arcade platforms and Android/iOS mobile, across RPG, SLG, ACT, racing, hybrid-casual, and other genres.</dd>
-      <dt>System Performance &amp; Optimization</dt>
-      <dd>Ex-MediaTek engineer specializing in game performance tuning on Android SoCs, thermal/power management, and deep trace analysis using Streamline, Systrace, MGD, and Xcode Instruments.</dd>
-      <dt>Leadership &amp; Project Management</dt>
-      <dd>Led technical teams of about 15 on large-scale game projects of up to 100 members. Drove iterative development under the Scrum framework, owning sprint planning, requirement breakdown, and technical risk management; established a GitHub Flow branching strategy, pull-request code review process, and GitHub Actions CI/CD pipelines to ensure release quality and a steady delivery cadence.</dd>
-    </dl>
-    <h3>Work Experience</h3>
-    <ul class="jobs">
-      <li><b>International Games System Co., Ltd. (IGS)</b><span>Assistant Programming Manager &amp; Casual Mobile Game Producer · 2 yrs (current)</span></li>
-      <li><b>MediaTek Inc.</b><span>Assistant Technical Manager · 5 yrs</span></li>
-      <li><b>IGG Inc.</b><span>Programming Manager · 5 yrs</span></li>
-      <li><b>International Games System Co., Ltd. (IGS)</b><span>Senior Programming Supervisor · 7 yrs</span></li>
-    </ul>
+  <section class="works" id="works">
+    <div class="container">
+      <h2 data-zh="打開就能玩的五個" data-en="Five you can play now" data-ja="すぐ遊べる 5 本">打開就能玩的五個</h2>
+      <div class="bento" id="featured"></div>
+    </div>
   </section>
-  <section class="about" lang="ja" data-lang="ja" hidden>
-    <img class="avatar" src="avatar.jpg" width="88" height="88" alt="Ken の似顔絵">
-    <p class="who">Ken (Kanyao Chang) <a class="li" href="https://github.com/agan0617" target="_blank" rel="noopener">GitHub ↗</a><a class="li" href="https://www.linkedin.com/in/kan-yao-chang-822b7965/" target="_blank" rel="noopener">LinkedIn ↗</a><a class="li mail" href="#" data-u="agan0617" data-d="gmail.com">✉ Email</a></p>
-    <p class="lead">ゲーム開発マネージャー兼テクニカルスペシャリスト。1982 年生まれ。モバイル・アーケード・クロスプラットフォームのゲーム開発で 19 年以上の経験があります。システムレベルのパフォーマンス最適化とチームリーダーシップを得意とし、Claude や Codex などの AI ツールを活用してゲームやアプリを開発しています。</p>
-    <h3>専門分野</h3>
-    <dl>
-      <dt>ゲーム開発・エンジンツール</dt>
-      <dd>Unity/Cocos、C/C++/C# に精通。複数のゲームのコアシステム（グラフィックス、AI、ネットワーク、物理などのモジュールを含む）、ゲームサーバー、ゲームエディタの開発経験があります。Windows/Linux ベースのアーケード機から Android/iOS のスマートフォンまで幅広いプラットフォームを手がけ、ジャンルは RPG・SLG・ACT・レースゲーム・ハイブリッドカジュアルゲームなど多岐にわたります。</dd>
-      <dt>システムパフォーマンス・最適化</dt>
-      <dd>元 MediaTek エンジニア。Android SoC 上でのゲームのパフォーマンスチューニング、熱・電力管理、Streamline・Systrace・MGD・Xcode Instruments を使った詳細なトレース解析を専門としています。</dd>
-      <dt>リーダーシップ・プロジェクト管理</dt>
-      <dd>最大 100 名規模の大型ゲームプロジェクトで、約 15 名の技術チームを率いました。Scrum フレームワークで反復開発を推進し、スプリント計画・要件分解・技術リスク管理を主導。GitHub Flow のブランチ戦略、Pull Request によるコードレビュー、GitHub Actions の CI/CD パイプラインを構築し、リリース品質と安定した開発リズムを確保しています。</dd>
-    </dl>
-    <h3>職歴</h3>
-    <ul class="jobs">
-      <li><b>International Games System Co., Ltd.（IGS・鈊象電子）</b><span>プログラム副マネージャー兼カジュアルモバイルゲームプロデューサー · 2 年（現職）</span></li>
-      <li><b>MediaTek Inc.（聯發科技）</b><span>テクニカル副マネージャー · 5 年</span></li>
-      <li><b>IGG Inc.（福州天盟數碼有限公司）</b><span>プログラムマネージャー · 5 年</span></li>
-      <li><b>International Games System Co., Ltd.（IGS・鈊象電子）</b><span>シニアプログラム主任 · 7 年</span></li>
-    </ul>
+
+  <section class="others" id="others">
+    <div class="container">
+      <div class="head">
+        <h2 data-zh="其他工具與 App" data-en="More tools and apps" data-ja="そのほかのツールとアプリ">其他工具與 App</h2>
+        <p data-zh="網頁工具點了就開；Android App 與 Windows 程式在各自 GitHub 的 Releases 下載。" data-en="Web tools open in the browser; the Android apps and the Windows player download from each project's Releases on GitHub." data-ja="ウェブのツールはそのまま開けます。Android アプリと Windows ソフトは GitHub の各 Releases から。">網頁工具點了就開；Android App 與 Windows 程式在各自 GitHub 的 Releases 下載。</p>
+      </div>
+      <ul id="others-list"></ul>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="container">
+      <h2 data-zh="關於我" data-en="About me" data-ja="自己紹介">關於我</h2>
+      <div lang="zh-Hant" data-lang="zh">
+        <div class="split">
+          <div class="me">
+            <img class="avatar" src="avatar.jpg" width="160" height="160" alt="Ken 的頭像">
+                <p class="who">Ken (Kanyao Chang)</p>
+            <p class="links"><a class="li" href="https://github.com/agan0617" target="_blank" rel="noopener">GitHub</a><a class="li" href="https://www.linkedin.com/in/kan-yao-chang-822b7965/" target="_blank" rel="noopener">LinkedIn</a><a class="li mail" href="#" data-u="agan0617" data-d="gmail.com">Email</a></p>
+            <p class="lead">遊戲開發經理暨技術專家，1982 年生，擁有 19 年以上手機、街機與跨平台遊戲的開發經驗。擅長系統層級的效能優化與團隊領導，並善用 Claude、Codex 等 AI 工具開發遊戲與應用程式。</p>
+              </div>
+          <div>
+            <h3 class="sub">核心專長</h3>
+            <dl>
+              <dt>遊戲開發與引擎工具</dt>
+              <dd>精通 Unity／Cocos 與 C／C++／C#。開發過多款遊戲的核心系統（包含繪圖、AI、網路、物理等模組）、遊戲伺服器與遊戲編輯器。作品橫跨 Windows／Linux 街機平台與 Android／iOS 手機平台，類型涵蓋 RPG、SLG、ACT、賽車競速與超休閒混合遊戲等。</dd>
+              <dt>系統效能與優化</dt>
+              <dd>前聯發科工程師，專精 Android SoC 運行遊戲的效能調校、溫控與功耗管理，熟用 Streamline、Systrace、MGD、Xcode Instruments 進行深度 trace 分析。</dd>
+              <dt>領導與專案管理</dt>
+              <dd>在規模達 100 人的大型遊戲專案中帶領約 15 人的技術團隊。以 Scrum 框架推動迭代開發，主導 Sprint 規劃、需求拆解與技術風險管控；建立 GitHub Flow 分支策略、Pull Request 程式審查機制與 GitHub Actions CI/CD 自動化管線，確保版本品質與穩定的交付節奏。</dd>
+            </dl>
+              </div>
+        </div>
+        <h3>工作經歷</h3>
+        <ul class="jobs">
+          <li><b>鈊象電子股份有限公司（IGS）</b><span>程式副理兼休閒手遊製作人，2 年（現職）</span></li>
+          <li><b>聯發科技股份有限公司（MediaTek）</b><span>技術副理，5 年</span></li>
+          <li><b>福州天盟數碼有限公司（IGG）</b><span>程式經理，5 年</span></li>
+          <li><b>鈊象電子股份有限公司（IGS）</b><span>程式資深主任，7 年</span></li>
+        </ul>
+      </div>
+      <div lang="en" data-lang="en" hidden>
+        <div class="split">
+          <div class="me">
+            <img class="avatar" src="avatar.jpg" width="160" height="160" alt="Portrait of Ken">
+                <p class="who">Ken (Kanyao Chang)</p>
+            <p class="links"><a class="li" href="https://github.com/agan0617" target="_blank" rel="noopener">GitHub</a><a class="li" href="https://www.linkedin.com/in/kan-yao-chang-822b7965/" target="_blank" rel="noopener">LinkedIn</a><a class="li mail" href="#" data-u="agan0617" data-d="gmail.com">Email</a></p>
+            <p class="lead">Game Development Manager &amp; Technical Specialist, born in 1982, with 19+ years of industry experience across mobile, arcade, and cross-platform games. Skilled in system-level performance optimization and team leadership, and leveraging AI tools (Claude, Codex) to build games and applications.</p>
+              </div>
+          <div>
+            <h3 class="sub">Core Expertise</h3>
+            <dl>
+              <dt>Game Development &amp; Engine Tools</dt>
+              <dd>Proficient in Unity/Cocos &amp; C/C++/C#. Experienced in building core systems for multiple games (including graphics, AI, networking, and physics modules), game servers, and game editors. Shipped titles span Windows/Linux arcade platforms and Android/iOS mobile, across RPG, SLG, ACT, racing, hybrid-casual, and other genres.</dd>
+              <dt>System Performance &amp; Optimization</dt>
+              <dd>Ex-MediaTek engineer specializing in game performance tuning on Android SoCs, thermal/power management, and deep trace analysis using Streamline, Systrace, MGD, and Xcode Instruments.</dd>
+              <dt>Leadership &amp; Project Management</dt>
+              <dd>Led technical teams of about 15 on large-scale game projects of up to 100 members. Drove iterative development under the Scrum framework, owning sprint planning, requirement breakdown, and technical risk management; established a GitHub Flow branching strategy, pull-request code review process, and GitHub Actions CI/CD pipelines to ensure release quality and a steady delivery cadence.</dd>
+            </dl>
+              </div>
+        </div>
+        <h3>Work Experience</h3>
+        <ul class="jobs">
+          <li><b>International Games System Co., Ltd. (IGS)</b><span>Assistant Programming Manager &amp; Casual Mobile Game Producer, 2 yrs (current)</span></li>
+          <li><b>MediaTek Inc.</b><span>Assistant Technical Manager, 5 yrs</span></li>
+          <li><b>IGG Inc.</b><span>Programming Manager, 5 yrs</span></li>
+          <li><b>International Games System Co., Ltd. (IGS)</b><span>Senior Programming Supervisor, 7 yrs</span></li>
+        </ul>
+      </div>
+      <div lang="ja" data-lang="ja" hidden>
+        <div class="split">
+          <div class="me">
+            <img class="avatar" src="avatar.jpg" width="160" height="160" alt="Ken の似顔絵">
+                <p class="who">Ken (Kanyao Chang)</p>
+            <p class="links"><a class="li" href="https://github.com/agan0617" target="_blank" rel="noopener">GitHub</a><a class="li" href="https://www.linkedin.com/in/kan-yao-chang-822b7965/" target="_blank" rel="noopener">LinkedIn</a><a class="li mail" href="#" data-u="agan0617" data-d="gmail.com">Email</a></p>
+            <p class="lead">ゲーム開発マネージャー兼テクニカルスペシャリスト。1982 年生まれ。モバイル・アーケード・クロスプラットフォームのゲーム開発で 19 年以上の経験があります。システムレベルのパフォーマンス最適化とチームリーダーシップを得意とし、Claude や Codex などの AI ツールを活用してゲームやアプリを開発しています。</p>
+              </div>
+          <div>
+            <h3 class="sub">専門分野</h3>
+            <dl>
+              <dt>ゲーム開発・エンジンツール</dt>
+              <dd>Unity/Cocos、C/C++/C# に精通。複数のゲームのコアシステム（グラフィックス、AI、ネットワーク、物理などのモジュールを含む）、ゲームサーバー、ゲームエディタの開発経験があります。Windows/Linux ベースのアーケード機から Android/iOS のスマートフォンまで幅広いプラットフォームを手がけ、ジャンルは RPG・SLG・ACT・レースゲーム・ハイブリッドカジュアルゲームなど多岐にわたります。</dd>
+              <dt>システムパフォーマンス・最適化</dt>
+              <dd>元 MediaTek エンジニア。Android SoC 上でのゲームのパフォーマンスチューニング、熱・電力管理、Streamline・Systrace・MGD・Xcode Instruments を使った詳細なトレース解析を専門としています。</dd>
+              <dt>リーダーシップ・プロジェクト管理</dt>
+              <dd>最大 100 名規模の大型ゲームプロジェクトで、約 15 名の技術チームを率いました。Scrum フレームワークで反復開発を推進し、スプリント計画・要件分解・技術リスク管理を主導。GitHub Flow のブランチ戦略、Pull Request によるコードレビュー、GitHub Actions の CI/CD パイプラインを構築し、リリース品質と安定した開発リズムを確保しています。</dd>
+            </dl>
+              </div>
+        </div>
+        <h3>職歴</h3>
+        <ul class="jobs">
+          <li><b>International Games System Co., Ltd.（IGS・鈊象電子）</b><span>プログラム副マネージャー兼カジュアルモバイルゲームプロデューサー、2 年（現職）</span></li>
+          <li><b>MediaTek Inc.（聯發科技）</b><span>テクニカル副マネージャー、5 年</span></li>
+          <li><b>IGG Inc.（福州天盟數碼有限公司）</b><span>プログラムマネージャー、5 年</span></li>
+          <li><b>International Games System Co., Ltd.（IGS・鈊象電子）</b><span>シニアプログラム主任、7 年</span></li>
+        </ul>
+      </div>
+    </div>
   </section>
 </main>
+
+<footer>
+  <div class="container">
+    <p class="sign">Ken, 2026</p>
+    <p class="meta"><a href="private/" data-zh="私人專區（需要密碼）" data-en="Private (password required)" data-ja="プライベート（パスワードが必要）">私人專區（需要密碼）</a>　<span id="ver"></span></p>
+  </div>
+</footer>
+
 <script>
 /* 所有網頁的清單。url 可以是這個 repo 裡的子資料夾（例如 "snake/"），也可以是其他 repo 的 GitHub Pages 網址。
-   private: true＝私人頁面（要密碼），做法見 README〈私人頁面〉 */
+   featured：代表作的順序（1 是最大那格），要配 img（img/works/ 底下的截圖）與 short（格子裡那一行）；
+   沒有 featured 的列在「其他工具與 App」。私人專區的入口在頁尾，不在這裡。 */
 const PAGES = [
-  { icon: "🗝️", name: "私人專區", desc: "需要密碼", url: "private/", tag: "私人", private: true,
-    en: { name: "Private", desc: "Password required", tag: "Private" },
-    ja: { name: "プライベート", desc: "パスワードが必要", tag: "非公開" } },
   { icon: "📚", name: "K書吧", desc: "電子書閱讀器：書架、閱讀進度同步、朗讀。", url: "https://agan0617.github.io/KBookBar/", tag: "工具",
-    en: { desc: "E-book reader: bookshelf, synced reading progress, text-to-speech.", tag: "Tool" },
-    ja: { desc: "電子書籍リーダー：本棚、読書進捗の同期、読み上げ。", tag: "ツール" } },
+    featured: 5, img: "img/works/kbookbar.webp", w: 1440, h: 900, short: "電子書閱讀器：書架、進度同步、朗讀。",
+    en: { desc: "E-book reader: bookshelf, synced reading progress, text-to-speech.", tag: "Tool", short: "E-book reader with synced progress and read-aloud." },
+    ja: { desc: "電子書籍リーダー：本棚、読書進捗の同期、読み上げ。", tag: "ツール", short: "本棚、進捗同期、読み上げつきの電子書籍リーダー。" } },
   { icon: "📖", name: "K書吧 App", desc: "K書吧的 Android App：背景、關螢幕也能朗讀。APK 在 Releases。", url: "https://github.com/agan0617/KBookBarApp", tag: "App",
     en: { name: "KBookBar App", desc: "Android app for KBookBar: text-to-speech keeps reading in the background and with the screen off. APK on Releases.", tag: "App" },
     ja: { name: "K書吧 アプリ", desc: "K書吧の Android アプリ。バックグラウンドや画面オフでも読み上げ。APK は Releases に。", tag: "アプリ" } },
@@ -176,17 +344,21 @@ const PAGES = [
     en: { name: "AnnoyingCats", desc: "A mini game made with Cocos Creator.", tag: "Game" },
     ja: { desc: "Cocos Creator で作ったミニゲーム。", tag: "ゲーム" } },
   { icon: "🗼", name: "魔塔：失落的旋律", desc: "經典魔塔：20 層原創關卡＋隱藏層、四隻大型 Boss、技能三選一、兩種結局，打倒 Boss 找回被偷走的音樂。手機電腦進度同步。", url: "https://agan0617.github.io/MagicTower/", tag: "遊戲",
-    en: { name: "Magic Tower: The Lost Melody", desc: "Classic Magic Tower: 20 original floors plus a hidden one, four giant bosses, a choice of three skills and two endings — defeat the bosses to bring stolen music back. Progress syncs across devices.", tag: "Game" },
-    ja: { name: "魔塔：失われた旋律", desc: "クラシック魔塔：オリジナル 20 階＋隠しフロア、大型ボス 4 体、3 択のスキル、2 種類のエンディング。ボスを倒して盗まれた音楽を取り戻そう。端末間で進行を同期。", tag: "ゲーム" } },
+    featured: 1, img: "img/works/magictower.webp", w: 908, h: 900, pos: "50% 62%", short: "20 層原創關卡、四隻大型 Boss、兩種結局，打倒 Boss 找回被偷走的音樂。",
+    en: { name: "Magic Tower: The Lost Melody", desc: "Classic Magic Tower: 20 original floors plus a hidden one, four giant bosses, a choice of three skills and two endings — defeat the bosses to bring stolen music back. Progress syncs across devices.", tag: "Game", short: "20 original floors, four giant bosses and two endings. Win the stolen music back." },
+    ja: { name: "魔塔：失われた旋律", desc: "クラシック魔塔：オリジナル 20 階＋隠しフロア、大型ボス 4 体、3 択のスキル、2 種類のエンディング。ボスを倒して盗まれた音楽を取り戻そう。端末間で進行を同期。", tag: "ゲーム", short: "オリジナル 20 階、大型ボス 4 体、エンディング 2 種。盗まれた音楽を取り戻そう。" } },
   { icon: "🗾", name: "K地圖", desc: "邊玩邊熟悉地圖：臺灣縣市、日本都道府縣、中國各省、世界 197 國。找位置、看名產猜地方、陪柴犬 Komugi 鄰接旅行，點亮每一塊、集滿印章。中英日三語，進度可雲端存檔跨裝置同步。", url: "https://agan0617.github.io/KMap/", tag: "遊戲",
-    en: { name: "KMap", desc: "Learn the map by playing: Taiwan's counties and cities, Japan's prefectures, China's provinces and 197 countries of the world. Find places, guess them from local specialties, travel with Komugi the shiba, light up every area and collect stamps. Chinese, English and Japanese; cloud save syncs progress across devices.", tag: "Game" },
-    ja: { name: "K地図", desc: "遊びながら地図を覚える：台湾の県市、日本の都道府県、中国の各省、世界197か国。場所当て、名物から当てるクイズ、柴犬 Komugi と隣接めぐり。全エリアを制覇してスタンプを集めよう。中・英・日の 3 言語、クラウドセーブで端末間同期。", tag: "ゲーム" } },
+    featured: 4, img: "img/works/kmap.webp", w: 1440, h: 900, short: "臺灣、日本、中國、世界 197 國，邊玩邊記地圖。",
+    en: { name: "KMap", desc: "Learn the map by playing: Taiwan's counties and cities, Japan's prefectures, China's provinces and 197 countries of the world. Find places, guess them from local specialties, travel with Komugi the shiba, light up every area and collect stamps. Chinese, English and Japanese; cloud save syncs progress across devices.", tag: "Game", short: "Taiwan, Japan, China and 197 countries: learn the map by playing." },
+    ja: { name: "K地図", desc: "遊びながら地図を覚える：台湾の県市、日本の都道府県、中国の各省、世界197か国。場所当て、名物から当てるクイズ、柴犬 Komugi と隣接めぐり。全エリアを制覇してスタンプを集めよう。中・英・日の 3 言語、クラウドセーブで端末間同期。", tag: "ゲーム", short: "台湾、日本、中国、世界 197 か国。遊びながら地図を覚える。" } },
   { icon: "🚀", name: "星海衝突", desc: "皇室戰爭式的直式即時對戰，加上星海爭霸的經濟：派礦工挖礦、蓋精煉廠收瓦斯、補人口、升建築解鎖兵種，再把兵丟上兩條路拆塔。單機對電腦，三種難度。", url: "https://agan0617.github.io/StarClash/", tag: "遊戲",
-    en: { name: "Star Clash", desc: "Clash Royale-style portrait real-time battles with StarCraft economy: send workers to mine, build refineries for gas, raise supply, tech up to unlock units, then push down two lanes to take towers. Single player against the computer, three difficulty levels.", tag: "Game" },
-    ja: { name: "星海衝突", desc: "クラロワ風の縦画面リアルタイム対戦に、スタクラ式の経済をプラス。ワーカーで採掘、精製所でガス、補給で人口を増やし、建物を建てて兵種を解放、2 本のレーンでタワーを落とそう。コンピュータとの一人用、難易度 3 段階。", tag: "ゲーム" } },
+    featured: 2, img: "img/works/starclash.webp", w: 780, h: 1688, pos: "50% 0%", short: "皇室戰爭的節奏，星海爭霸的經濟。",
+    en: { name: "Star Clash", desc: "Clash Royale-style portrait real-time battles with StarCraft economy: send workers to mine, build refineries for gas, raise supply, tech up to unlock units, then push down two lanes to take towers. Single player against the computer, three difficulty levels.", tag: "Game", short: "Clash Royale pace with a StarCraft economy." },
+    ja: { name: "星海衝突", desc: "クラロワ風の縦画面リアルタイム対戦に、スタクラ式の経済をプラス。ワーカーで採掘、精製所でガス、補給で人口を増やし、建物を建てて兵種を解放、2 本のレーンでタワーを落とそう。コンピュータとの一人用、難易度 3 段階。", tag: "ゲーム", short: "クラロワのテンポに、スタクラの経済。" } },
   { icon: "🏎️", name: "KCar", desc: "3D 卡丁車競速：甩尾集氣換氮氣，放開甩尾、車身回正的瞬間按油門噴出小噴，再接雙噴。柴犬 Komugi 開車，計時賽與自由練習，手機電腦都能玩。", url: "https://agan0617.github.io/KCar/", tag: "遊戲",
-    en: { name: "KCar", desc: "3D kart racing: drift to charge nitro, then hit the throttle just as the kart straightens out of a drift for a boost — and again for a double boost. Komugi the shiba drives; time trial and free practice, on phone or PC.", tag: "Game" },
-    ja: { name: "KCar", desc: "3D カートレース。ドリフトでニトロをため、ドリフトを解いて車体がまっすぐになった瞬間にアクセルでミニブースト、続けてダブルブースト。柴犬 Komugi が運転、タイムアタックとフリー走行、スマホでもPCでも。", tag: "ゲーム" } },
+    featured: 3, img: "img/works/kcar.webp", w: 1440, h: 900, pos: "50% 60%", short: "3D 卡丁車：甩尾集氣，小噴接雙噴。",
+    en: { desc: "3D kart racing: drift to charge nitro, then hit the throttle just as the kart straightens out of a drift for a boost — and again for a double boost. Komugi the shiba drives; time trial and free practice, on phone or PC.", tag: "Game", short: "3D karts: drift to charge, then boost and double boost." },
+    ja: { desc: "3D カートレース。ドリフトでニトロをため、ドリフトを解いて車体がまっすぐになった瞬間にアクセルでミニブースト、続けてダブルブースト。柴犬 Komugi が運転、タイムアタックとフリー走行、スマホでもPCでも。", tag: "ゲーム", short: "3D カート。ドリフトでためて、ミニブーストからダブルブースト。" } },
   { icon: "🎲", name: "K桌遊", desc: "桌遊小幫手：玩法教學、主持人旁白語音與字幕（按一下就念「天黑請閉眼」），還有一支手機傳著玩的發詞、發身分。中英日三語，收錄阿瓦隆、誰是臥底、砰！、三國殺。", url: "https://agan0617.github.io/KBoardGame/", tag: "工具",
     en: { name: "K Board Games", desc: "Board game helper: rules tutorials, narrator voice with subtitles (tap once to hear \"Night falls, close your eyes\"), and secret words or roles dealt by passing one phone around. Chinese, English and Japanese; includes Avalon, Undercover, BANG! and Legends of the Three Kingdoms.", tag: "Tool" },
     ja: { name: "Kボードゲーム", desc: "ボードゲームのお助けアプリ。ルール解説、進行役のナレーション音声と字幕（タップひとつで「夜になりました」）、スマホ 1 台を回してお題や身分を配る機能つき。中英日の 3 言語、アヴァロン、アンダーカバー（誰是臥底）、BANG!、三国殺を収録。", tag: "ツール" } },
@@ -208,19 +380,25 @@ const PAGES = [
 ];
 
 /* 版號：改首頁就加版號 */
-const SITE_VERSION = "1.0.1";
+const SITE_VERSION = "2.0.0";
 document.getElementById("ver").textContent = "v" + SITE_VERSION;
 
+const GO = { zh: { "遊戲": "開始玩", "工具": "打開" }, en: { "遊戲": "Play", "工具": "Open" }, ja: { "遊戲": "遊ぶ", "工具": "開く" } };
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 function renderPages(l) {
-  document.getElementById("grid").innerHTML = PAGES.map(p => {
-    const t = Object.assign({}, p, l !== "zh" && p[l] ? p[l] : {});   // en／ja 裡有的欄位蓋過中文
+  const tr = p => Object.assign({}, p, l !== "zh" && p[l] ? p[l] : {});   // en／ja 裡有的欄位蓋過中文
+  document.getElementById("featured").innerHTML = PAGES.filter(p => p.featured).sort((a, b) => a.featured - b.featured).map((p, i) => {
+    const t = tr(p);
     return `
-  <a class="card" href="${esc(p.url)}">
-    <div class="top"><span class="icon">${p.icon}</span><span class="name">${esc(t.name)}</span>${p.private ? `<span class="lock" title="私人頁面，需要密碼">🔒</span>` : ""}${t.tag ? `<span class="tag">${esc(t.tag)}</span>` : ""}</div>
-    <div class="desc">${esc(t.desc)}</div>
-    <div class="url">${esc(p.url.replace(/^https:\/\//, ""))}</div>
+  <a class="tile" href="${esc(p.url)}">
+    <div class="shot"><img src="${esc(p.img)}" width="${p.w}" height="${p.h}" alt="" ${i ? 'loading="lazy"' : ""} decoding="async" style="object-position:${p.pos || "50% 50%"}"></div>
+    <div class="cap"><h3>${esc(t.name)}</h3><p>${esc(t.short)}</p><span class="go">${esc(GO[l][p.tag] || GO[l]["工具"])}</span></div>
   </a>`;
+  }).join("");
+  document.getElementById("others-list").innerHTML = PAGES.filter(p => !p.featured).map(p => {
+    const t = tr(p);
+    return `
+  <li><a href="${esc(p.url)}"><span class="n">${esc(t.name)}</span><span class="d">${esc(t.desc)}</span><span class="t">${esc(t.tag)}</span></a></li>`;
   }).join("");
 }
 
@@ -243,7 +421,7 @@ document.querySelectorAll("a.mail").forEach(a => a.addEventListener("click", e =
   const addr = a.dataset.u + "@" + a.dataset.d;
   if (a.dataset.shown) return;          // 第二次點就照 mailto 開信
   e.preventDefault();
-  a.dataset.shown = "1"; a.href = "mailto:" + addr; a.textContent = "✉ " + addr;
+  a.dataset.shown = "1"; a.href = "mailto:" + addr; a.textContent = addr;
 }));
 </script>
 </body>
