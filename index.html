@@ -457,10 +457,10 @@ const PAGES = [
     featured: 4, img: "img/works/starclash.webp", w: 780, h: 1688, pos: "50% 12%", short: "皇室戰爭的節奏，星海爭霸的經濟。",
     en: { name: "Star Clash", desc: "Clash Royale-style portrait real-time battles with StarCraft economy: send workers to mine, build refineries for gas, raise supply, tech up to unlock units, then push down two lanes to take towers. Single player against the computer, three difficulty levels.", tag: "Game", short: "Clash Royale pace with a StarCraft economy." },
     ja: { name: "星海衝突", desc: "クラロワ風の縦画面リアルタイム対戦に、スタクラ式の経済をプラス。ワーカーで採掘、精製所でガス、補給で人口を増やし、建物を建てて兵種を解放、2 本のレーンでタワーを落とそう。コンピュータとの一人用、難易度 3 段階。", tag: "ゲーム", short: "クラロワのテンポに、スタクラの経済。" } },
-  { icon: "🏎️", name: "KCar", desc: "3D 卡丁車競速：甩尾集氣換氮氣，放開甩尾、車身回正的瞬間按油門噴出小噴，再接雙噴。柴犬 Komugi 開車，計時賽與自由練習，手機電腦都能玩。", url: "https://agan0617.github.io/KCar/", tag: "遊戲",
-    featured: 5, img: "img/works/kcar.webp", w: 1440, h: 900, pos: "50% 60%", short: "3D 卡丁車：甩尾集氣，小噴接雙噴。",
-    en: { desc: "3D kart racing: drift to charge nitro, then hit the throttle just as the kart straightens out of a drift for a boost — and again for a double boost. Komugi the shiba drives; time trial and free practice, on phone or PC.", tag: "Game", short: "3D karts: drift to charge, then boost and double boost." },
-    ja: { desc: "3D カートレース。ドリフトでニトロをため、ドリフトを解いて車体がまっすぐになった瞬間にアクセルでミニブースト、続けてダブルブースト。柴犬 Komugi が運転、タイムアタックとフリー走行、スマホでもPCでも。", tag: "ゲーム", short: "3D カート。ドリフトでためて、ミニブーストからダブルブースト。" } },
+  { icon: "🏎️", name: "KCar", desc: "3D 卡丁車競速：過彎甩尾集氣，放開甩尾就噴出小噴，集滿氮氣一路衝刺。十條賽道，有長賽道、高低差與大跳台；競賽對 3 位電腦車手，還有計時賽、自由練習與最多 4 人連線。柴犬 Komugi 開車，手機電腦都能玩。", url: "https://agan0617.github.io/KCar/", tag: "遊戲",
+    featured: 5, img: "img/works/kcar.webp", w: 1440, h: 900, pos: "50% 60%", pv: "video/kcar-pv.mp4", pvPoster: "video/kcar-pv.webp", short: "3D 卡丁車：十條賽道，甩尾集氣、放開就噴。",
+    en: { desc: "3D kart racing: drift through corners to charge up, release the drift for a mini-turbo, and fill the nitro gauge for a long boost. Ten tracks with long courses, elevation and big jumps; race three AI drivers, or play time trial, free practice and multiplayer for up to 4. Komugi the shiba drives, on phone or PC.", tag: "Game", short: "3D karts on ten tracks: drift to charge, release to boost." },
+    ja: { desc: "3D カートレース。コーナーでドリフトしてため、ドリフトを離すとミニターボ、ニトロがたまれば一気に加速。長いコースや高低差、大ジャンプのある 10 コース。CPU 3 人とのレースのほか、タイムアタック、フリー走行、最大 4 人の対戦も。柴犬 Komugi が運転、スマホでもPCでも。", tag: "ゲーム", short: "3D カート、10 コース。ドリフトでためて、離せばブースト。" } },
   { icon: "🎲", name: "K桌遊", desc: "桌遊小幫手：玩法教學、主持人旁白語音與字幕（按一下就念「天黑請閉眼」），還有一支手機傳著玩的發詞、發身分。中英日三語，收錄阿瓦隆、誰是臥底、砰！、三國殺。", url: "https://agan0617.github.io/KBoardGame/", tag: "工具",
     en: { name: "K Board Games", desc: "Board game helper: rules tutorials, narrator voice with subtitles (tap once to hear \"Night falls, close your eyes\"), and secret words or roles dealt by passing one phone around. Chinese, English and Japanese; includes Avalon, Undercover, BANG! and Legends of the Three Kingdoms.", tag: "Tool" },
     ja: { name: "Kボードゲーム", desc: "ボードゲームのお助けアプリ。ルール解説、進行役のナレーション音声と字幕（タップひとつで「夜になりました」）、スマホ 1 台を回してお題や身分を配る機能つき。中英日の 3 言語、アヴァロン、アンダーカバー（誰是臥底）、BANG!、三国殺を収録。", tag: "ツール" } },
@@ -482,7 +482,7 @@ const PAGES = [
 ];
 
 /* 版號：改首頁就加版號 */
-const SITE_VERSION = "2.3.1";
+const SITE_VERSION = "2.3.2";
 document.getElementById("ver").textContent = "v" + SITE_VERSION;
 
 const PV_LABEL = { zh: "介紹影片", en: "Intro video", ja: "紹介動画" };
