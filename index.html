@@ -212,6 +212,14 @@ dialog.pv video { display: block; width: 100%; height: auto; max-height: calc(10
 .others .d { color: var(--color-ink-2); }
 .others .t { justify-self: end; font-size: var(--text-sm); font-weight: 700; color: var(--color-muted); }
 .others li a:hover .d, .others li a:hover .t { color: var(--color-accent-ink); }
+/* 有介紹影片的列：按鈕放在這列左下角（按鈕不能包在連結裡，所以疊在上面） */
+.others li { position: relative; }
+.others li.has-pv a { min-height: calc(2 * var(--space-md) + 2.25rem + 44px); }
+.others li .pv-btn { position: absolute; left: var(--space-sm); top: calc(var(--space-md) + 2.25rem); }
+@media (max-width: 40rem) {   /* 手機：說明換到第二行，按鈕改排在說明下面 */
+  .others li.has-pv a { min-height: 0; padding-bottom: calc(var(--space-md) + 44px + var(--space-sm)); }
+  .others li .pv-btn { top: auto; bottom: var(--space-md); }
+}
 
 /* ── 關於我（Split：左邊人與一句話，右邊專長；經歷在下面成列） ── */
 .about { padding-bottom: var(--section-gap); }
@@ -462,6 +470,7 @@ const PAGES = [
     en: { desc: "3D kart racing: drift through corners to charge up, release the drift for a mini-turbo, and fill the nitro gauge for a long boost. Ten tracks with long courses, elevation and big jumps; race three AI drivers, or play time trial, free practice and multiplayer for up to 4. Komugi the shiba drives, on phone or PC.", tag: "Game", short: "3D karts on ten tracks: drift to charge, release to boost." },
     ja: { desc: "3D カートレース。コーナーでドリフトしてため、ドリフトを離すとミニターボ、ニトロがたまれば一気に加速。長いコースや高低差、大ジャンプのある 10 コース。CPU 3 人とのレースのほか、タイムアタック、フリー走行、最大 4 人の対戦も。柴犬 Komugi が運転、スマホでもPCでも。", tag: "ゲーム", short: "3D カート、10 コース。ドリフトでためて、離せばブースト。" } },
   { icon: "🛵", name: "KMoto", desc: "3D 機車狂飆：騎機車在很像台灣的街上高速狂奔，閃過車陣與三寶——開門殺、逆向、違規迴轉、酒駕、選舉宣傳車、大車內輪差。五章二十關，每關一個趕時間的理由，從送早餐到老婆快生了。手機電腦都能玩，App 在 Releases。", url: "https://agan0617.github.io/KMoto/", tag: "遊戲",
+    pv: "video/kmoto-pv.mp4", pvPoster: "video/kmoto-pv.webp",
     en: { desc: "3D scooter rush: race a scooter through streets that look just like Taiwan, dodging traffic and reckless drivers—opening car doors, wrong-way riders, illegal U-turns, drunk drivers, election campaign trucks, turning trucks. Five chapters, twenty levels, each with a reason to hurry, from delivering breakfast to a wife in labor. Plays on phone or PC; the app is on Releases.", tag: "Game" },
     ja: { desc: "3D スクーター爆走。台湾そっくりの街をスクーターで駆け抜け、渋滞と危険運転をかわそう——ドア開け、逆走、違法 U ターン、飲酒運転、選挙カー、大型車の内輪差。5 章 20 ステージ、朝食の配達から「妻が産気づいた！」まで、毎回急ぐ理由つき。スマホでも PC でも、アプリは Releases に。", tag: "ゲーム" } },
   { icon: "🎲", name: "K桌遊", desc: "桌遊小幫手：玩法教學、主持人旁白語音與字幕（按一下就念「天黑請閉眼」），還有一支手機傳著玩的發詞、發身分。中英日三語，收錄阿瓦隆、誰是臥底、砰！、三國殺。", url: "https://agan0617.github.io/KBoardGame/", tag: "工具",
@@ -485,7 +494,7 @@ const PAGES = [
 ];
 
 /* 版號：改首頁就加版號 */
-const SITE_VERSION = "2.3.2";
+const SITE_VERSION = "2.3.3";
 document.getElementById("ver").textContent = "v" + SITE_VERSION;
 
 const PV_LABEL = { zh: "介紹影片", en: "Intro video", ja: "紹介動画" };
@@ -493,9 +502,10 @@ const GO = { zh: { "遊戲": "開始玩", "工具": "打開" }, en: { "遊戲": 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 function renderPages(l) {
   const tr = p => Object.assign({}, p, l !== "zh" && p[l] ? p[l] : {});   // en／ja 裡有的欄位蓋過中文
+  const pvBtn = (p, t) => p.pv ? `<button type="button" class="pv-btn" data-pv="${esc(p.pv)}" data-poster="${esc(p.pvPoster || "")}" data-title="${esc(t.name + " " + PV_LABEL[l])}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>${esc(PV_LABEL[l])}</button>` : "";
   document.getElementById("featured").innerHTML = PAGES.filter(p => p.featured).sort((a, b) => a.featured - b.featured).map((p, i) => {
     const t = tr(p);
-    const pv = p.pv ? `<button type="button" class="pv-btn" data-pv="${esc(p.pv)}" data-poster="${esc(p.pvPoster || "")}" data-title="${esc(t.name + " " + PV_LABEL[l])}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>${esc(PV_LABEL[l])}</button>` : "";
+    const pv = pvBtn(p, t);
     return `
   <article class="tile">
     <div class="shot"><img src="${esc(p.img)}" width="${p.w}" height="${p.h}" alt="" ${i ? 'loading="lazy"' : ""} decoding="async" style="object-position:${p.pos || "50% 50%"}"></div>
@@ -505,7 +515,7 @@ function renderPages(l) {
   document.getElementById("others-list").innerHTML = PAGES.filter(p => !p.featured).map(p => {
     const t = tr(p);
     return `
-  <li><a href="${esc(p.url)}"><span class="n">${esc(t.name)}</span><span class="d">${esc(t.desc)}</span><span class="t">${esc(t.tag)}</span></a></li>`;
+  <li${p.pv ? ' class="has-pv"' : ""}><a href="${esc(p.url)}"><span class="n">${esc(t.name)}</span><span class="d">${esc(t.desc)}</span><span class="t">${esc(t.tag)}</span></a>${pvBtn(p, t)}</li>`;
   }).join("");
 }
 
@@ -528,14 +538,16 @@ setLang(saved || (/^zh/i.test(navigator.language) ? "zh" : /^ja/i.test(navigator
 
 /* PV：點「看 PV」在視窗裡播，關掉就停；按 Esc 或點視窗外面也會關 */
 const dlg = document.querySelector("dialog.pv"), vid = dlg.querySelector("video");
-document.getElementById("featured").addEventListener("click", e => {
+const openPv = e => {
   const b = e.target.closest(".pv-btn");
   if (!b) return;
   vid.poster = b.dataset.poster; vid.src = b.dataset.pv;
   dlg.querySelector(".pv-title").textContent = b.dataset.title;
   dlg.showModal();
   vid.play().catch(() => {});
-});
+};
+document.getElementById("featured").addEventListener("click", openPv);
+document.getElementById("others-list").addEventListener("click", openPv);
 dlg.querySelector(".pv-close").addEventListener("click", () => dlg.close());
 dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
 dlg.addEventListener("close", () => { vid.pause(); });
