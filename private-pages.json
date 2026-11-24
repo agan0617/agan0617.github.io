@@ -28,6 +28,10 @@
     "out": "guides/dbfz/index.html"
   },
   {
+    "src": "_private/sf2.html",
+    "out": "guides/sf2/index.html"
+  },
+  {
     "src": "_private/talks.html",
     "out": "talks/index.html"
   },
